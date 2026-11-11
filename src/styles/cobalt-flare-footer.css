@@ -1,0 +1,477 @@
+/* ==========================================================================
+   Vantix Footer ("Cobalt Flare") Styles
+   Responsive Light & Dark Theme System
+   Reference Composition: 1326 × 1186
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+
+/* Light Mode (Default) */
+.cobalt-footer-root {
+  --u: clamp(0.72px, min(100vw / 1326, 100vh / 1186), 1.16px);
+  --color-page: #f0f6fe;
+  --color-text: #0b1d3a;
+  --color-links: #334155;
+  --color-copyright: #64748b;
+  --color-cyan: #0284c7;
+  --color-divider: rgba(14, 165, 233, 0.25);
+
+  position: relative;
+  width: 100%;
+  background-color: var(--color-page);
+  color: var(--color-text);
+  overflow: hidden;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Dark Mode Override */
+.dark .cobalt-footer-root,
+html.dark .cobalt-footer-root {
+  --color-page: #00071A;
+  --color-text: #FFFFFF;
+  --color-links: #AFCAF3;
+  --color-copyright: #B3CCEF;
+  --color-cyan: #2EF0FD;
+  --color-divider: rgba(42, 116, 232, 0.4);
+}
+
+/* Sky gradient atop glow image on tall screens (Dark mode only, no white shade filter in light mode) */
+.cobalt-footer-sky {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(40 * var(--u));
+  background: linear-gradient(90deg, #2A70F9 0%, #0C40D2 25%, #126FF3 50%, #57E3FC 75%, #64E4FC 100%);
+  opacity: 0.85;
+  z-index: 1;
+  transition: all 0.4s ease;
+}
+
+.dark .cobalt-footer-sky,
+html.dark .cobalt-footer-sky {
+  display: block;
+}
+
+/* Glow Plate & Aurora Motion Video Box (top 558u) - White shade filter removed in light mode */
+.cobalt-glow-box {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(558 * var(--u));
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 1;
+  -webkit-mask-image: none;
+  mask-image: none;
+  transition: opacity 0.4s ease;
+}
+
+.dark .cobalt-glow-box,
+html.dark .cobalt-glow-box {
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0) 100%);
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0) 100%);
+}
+
+.cobalt-glow-plate {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: opacity 0.9s ease;
+}
+
+.cobalt-glow-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  mix-blend-mode: normal;
+}
+
+.dark .cobalt-glow-video,
+html.dark .cobalt-glow-video {
+  mix-blend-mode: screen;
+}
+
+.cobalt-glow-video.is-ready {
+  opacity: 0.92;
+}
+
+/* Scale Vector Stage (1326 × 1186 reference viewBox) */
+.cobalt-vector-stage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(1326 * var(--u));
+  height: calc(1186 * var(--u));
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Centered Content Frame (1326u) */
+.cobalt-content-frame {
+  position: relative;
+  z-index: 3;
+  margin: 0 auto;
+  width: calc(1326 * var(--u));
+  height: calc(1186 * var(--u));
+  box-sizing: border-box;
+}
+
+/* Left Section: Headline and CTA */
+.cobalt-left-block {
+  position: absolute;
+  left: calc(72 * var(--u));
+  top: calc(589 * var(--u));
+  width: calc(380 * var(--u));
+}
+
+.cobalt-headline {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: calc(29 * var(--u));
+  line-height: 1.24;
+  letter-spacing: -0.015em;
+  color: var(--color-text);
+  margin: 0 0 calc(42 * var(--u)) 0;
+  transition: color 0.3s ease;
+}
+
+.cobalt-cta-row {
+  display: flex;
+  align-items: center;
+  gap: calc(20 * var(--u));
+  text-decoration: none;
+  cursor: pointer;
+  width: fit-content;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cobalt-cta-row:hover {
+  transform: translateX(4px);
+}
+
+.cobalt-cta-ring {
+  width: calc(76 * var(--u));
+  height: calc(76 * var(--u));
+  border-radius: 50%;
+  border: 1.8px solid var(--color-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  box-shadow: 0 0 16px rgba(46, 240, 253, 0.15);
+}
+
+.cobalt-cta-row:hover .cobalt-cta-ring {
+  background-color: rgba(46, 240, 253, 0.08);
+  box-shadow: 0 0 28px rgba(46, 240, 253, 0.45);
+}
+
+.cobalt-cta-arrow {
+  width: calc(26 * var(--u));
+  height: calc(26 * var(--u));
+  color: var(--color-cyan);
+  transition: transform 0.25s ease;
+}
+
+.cobalt-cta-row:hover .cobalt-cta-arrow {
+  transform: translate(2px, -2px);
+}
+
+.cobalt-cta-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: calc(30 * var(--u));
+  letter-spacing: -0.01em;
+  color: var(--color-cyan);
+  text-decoration: underline;
+  text-underline-offset: calc(6 * var(--u));
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.cobalt-cta-row:hover .cobalt-cta-text {
+  text-shadow: 0 0 16px rgba(46, 240, 253, 0.5);
+}
+
+/* Right Columns: Important and Legal */
+.cobalt-col-important {
+  position: absolute;
+  left: calc(859 * var(--u));
+  top: calc(589 * var(--u));
+  width: calc(180 * var(--u));
+}
+
+.cobalt-col-legal {
+  position: absolute;
+  left: calc(1078 * var(--u));
+  top: calc(589 * var(--u));
+  width: calc(200 * var(--u));
+}
+
+.cobalt-col-heading {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: calc(28 * var(--u));
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0 0 calc(28 * var(--u)) 0;
+  transition: color 0.3s ease;
+}
+
+.cobalt-link-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cobalt-link-item {
+  height: calc(58.75 * var(--u));
+  display: flex;
+  align-items: center;
+}
+
+.cobalt-link {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: calc(21.6 * var(--u));
+  color: var(--color-links);
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  white-space: nowrap;
+}
+
+.cobalt-link:hover {
+  color: var(--color-cyan);
+  transform: translateX(3px);
+  text-shadow: 0 0 12px rgba(46, 240, 253, 0.35);
+}
+
+/* Bottom Bar: Follow Us, Social Icons, and Copyright */
+.cobalt-bottom-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(1015 * var(--u));
+  display: flex;
+  align-items: center;
+  padding-left: calc(72 * var(--u));
+  padding-right: calc(72 * var(--u));
+}
+
+.cobalt-follow-label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: calc(21.6 * var(--u));
+  color: var(--color-links);
+  margin-right: calc(42 * var(--u));
+}
+
+.cobalt-social-list {
+  display: flex;
+  align-items: center;
+  gap: calc(27 * var(--u));
+}
+
+.cobalt-social-icon {
+  width: calc(45 * var(--u));
+  height: calc(45 * var(--u));
+  border-radius: 50%;
+  border: 0.8px solid var(--color-divider);
+  background: rgba(2, 132, 199, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-links);
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.dark .cobalt-social-icon,
+html.dark .cobalt-social-icon {
+  background: rgba(42, 116, 232, 0.05);
+}
+
+.cobalt-social-icon svg {
+  width: calc(20 * var(--u));
+  height: calc(20 * var(--u));
+  fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.cobalt-social-icon:hover {
+  border-color: var(--color-cyan);
+  color: var(--color-cyan);
+  background: rgba(46, 240, 253, 0.1);
+  box-shadow: 0 0 16px rgba(46, 240, 253, 0.4);
+  transform: translateY(-2px);
+}
+
+.cobalt-social-icon:hover svg {
+  transform: scale(1.1);
+}
+
+.cobalt-copyright {
+  position: absolute;
+  right: calc(72 * var(--u));
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: calc(20 * var(--u));
+  color: var(--color-copyright);
+  letter-spacing: -0.005em;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Mobile Wordmark (hidden on desktop) */
+.cobalt-mobile-wordmark {
+  display: none;
+}
+
+/* ==========================================================================
+   Responsive Adaptations for Tablets & Mobile (< 960px)
+   ========================================================================== */
+@media (max-width: 960px) {
+  .cobalt-footer-root {
+    --u: 1px;
+    height: auto;
+    min-height: unset;
+    padding-bottom: 50px;
+  }
+
+  .cobalt-vector-stage {
+    display: none; /* Hide desktop SVG arc, ring, and vertical wordmark */
+  }
+
+  .cobalt-content-frame {
+    width: 100%;
+    height: auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 3;
+  }
+
+  .cobalt-glow-box {
+    position: relative;
+    height: 280px;
+  }
+
+  .cobalt-mobile-wordmark {
+    display: block;
+    margin-top: 32px;
+    margin-bottom: 24px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 50%, #1d4ed8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .dark .cobalt-mobile-wordmark,
+  html.dark .cobalt-mobile-wordmark {
+    background: linear-gradient(135deg, #1DB6FC 0%, #44F4FD 50%, #19DAFD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .cobalt-left-block {
+    position: static;
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
+
+  .cobalt-headline {
+    font-size: 24px;
+    margin-bottom: 24px;
+  }
+
+  .cobalt-cta-ring {
+    width: 56px;
+    height: 56px;
+  }
+
+  .cobalt-cta-arrow {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cobalt-cta-text {
+    font-size: 22px;
+  }
+
+  .cobalt-col-important,
+  .cobalt-col-legal {
+    position: static;
+    width: 100%;
+    margin-bottom: 32px;
+  }
+
+  .cobalt-col-heading {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .cobalt-link-item {
+    height: 38px;
+  }
+
+  .cobalt-link {
+    font-size: 16px;
+  }
+
+  .cobalt-bottom-row {
+    position: static;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px 0 0 0;
+    border-top: 1px dashed var(--color-divider);
+    margin-top: 24px;
+  }
+
+  .cobalt-follow-label {
+    margin-right: 0;
+    font-size: 16px;
+  }
+
+  .cobalt-social-list {
+    gap: 16px;
+  }
+
+  .cobalt-social-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .cobalt-social-icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .cobalt-copyright {
+    position: static;
+    text-align: left;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+}
