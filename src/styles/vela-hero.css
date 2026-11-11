@@ -347,54 +347,82 @@ html.dark .vela-grain-overlay {
   gap: calc(14 * var(--u));
 }
 
-/* Store Button Style */
-.vela-store-btn {
+/* Enterprise CTA Buttons */
+.vela-cta-btn {
   display: inline-flex;
   align-items: center;
-  gap: calc(10 * var(--u));
-  height: calc(58 * var(--u));
-  padding: 0 calc(20 * var(--u));
+  justify-content: center;
+  gap: calc(8 * var(--u));
+  height: calc(54 * var(--u));
+  padding: 0 calc(24 * var(--u));
   border-radius: 999px;
-  border: 1.4px solid var(--vela-ink);
-  background: transparent;
-  color: var(--vela-ink);
-  text-decoration: none;
   font-family: 'Inter Tight', sans-serif;
-  font-size: calc(16 * var(--u));
-  font-weight: 500;
+  font-size: calc(15.5 * var(--u));
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
   white-space: nowrap;
 }
 
-.vela-store-btn svg {
-  width: calc(22 * var(--u));
-  height: calc(22 * var(--u));
-  fill: currentColor;
-}
-
-.vela-store-btn:hover {
+.vela-cta-primary {
   background: var(--vela-ink);
-  color: #FFFFFF;
+  color: #ffffff !important;
+  border: 1.4px solid var(--vela-ink);
+  box-shadow: 0 4px 14px rgba(7, 59, 58, 0.22);
 }
 
-.dark .vela-store-btn:hover,
-html.dark .vela-store-btn:hover {
-  background: #FFFFFF;
-  color: #0D0D0C;
+.vela-cta-primary:hover {
+  background: #0c7075;
+  border-color: #0c7075;
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(7, 59, 58, 0.32);
 }
 
-/* App Store flash effect during "Build web" */
-.vela-store-btn.app-store-flash {
-  background: var(--vela-ink) !important;
-  color: #FFFFFF !important;
+.vela-cta-secondary {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: var(--vela-ink) !important;
+  border: 1.4px solid rgba(7, 59, 58, 0.3);
 }
 
-.dark .vela-store-btn.app-store-flash,
-html.dark .vela-store-btn.app-store-flash {
-  background: #FFFFFF !important;
-  color: #0D0D0C !important;
+.vela-cta-secondary:hover {
+  background: #ffffff;
+  border-color: var(--vela-ink);
+  color: var(--vela-ink) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.dark .vela-cta-primary,
+html.dark .vela-cta-primary {
+  background: #0c7075;
+  border-color: #0c7075;
+  color: #ffffff !important;
+}
+
+.dark .vela-cta-primary:hover,
+html.dark .vela-cta-primary:hover {
+  background: #2dd4bf;
+  border-color: #2dd4bf;
+  color: #042a2b !important;
+}
+
+.dark .vela-cta-secondary,
+html.dark .vela-cta-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.dark .vela-cta-secondary:hover,
+html.dark .vela-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff !important;
 }
 
 /* 2-Line Caption */

@@ -1385,7 +1385,7 @@ export const servicesData: Service[] = [
             "iOS app development using Swift and Objective-C.",
             "Android app development with Kotlin and Java.",
             "Custom integrations with backend and cloud services.",
-            "App Store and Play Store deployment with compliance support."
+            "Enterprise mobile app deployment and multi-platform distribution."
           ],
           "icon": "/assets/services/mobility-and-app-development-icon-2.svg"
         },

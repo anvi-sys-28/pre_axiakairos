@@ -11,7 +11,7 @@ import { caseStudies as defaultCaseStudies, type CaseStudyItem } from '@/data/ca
 import { blogs as defaultBlogs, type BlogPost } from '@/data/blogs';
 import { jobs as defaultJobs, type Job } from '@/data/jobs';
 
-export const CMS_STORAGE_KEY = 'axia_cms_content_v1';
+export const CMS_STORAGE_KEY = 'axia_cms_content_v3';
 export const CMS_UPDATE_EVENT = 'axia-cms-update';
 
 export interface TeamMemberItem {
@@ -689,14 +689,36 @@ export const getDefaultCMSData = (): CMSData => ({
  * Loads current CMS data from localStorage, falling back to default code definitions
  */
 export function loadCMSData(): CMSData {
-  if (typeof window === 'undefined') return getDefaultCMSData();
+  const defaults = getDefaultCMSData();
+  if (typeof window === 'undefined') return defaults;
 
   try {
+    // Purge legacy storage keys immediately
+    try {
+      localStorage.removeItem('axia_cms_content_v1');
+      localStorage.removeItem('axia_cms_content_v2');
+      localStorage.removeItem('halden_cms_content_v1');
+    } catch {}
+
     const raw = localStorage.getItem(CMS_STORAGE_KEY);
-    if (!raw) return getDefaultCMSData();
+    if (!raw) return defaults;
+
+    // Check for legacy/stale content indicators in raw string
+    const rawLower = raw.toLowerCase();
+    if (
+      rawLower.includes('11.5m') ||
+      rawLower.includes('$0.0002') ||
+      rawLower.includes('dapps') ||
+      rawLower.includes('crypto wallet') ||
+      rawLower.includes('app store')
+    ) {
+      try {
+        localStorage.removeItem(CMS_STORAGE_KEY);
+      } catch {}
+      return defaults;
+    }
 
     const parsed = JSON.parse(raw);
-    const defaults = getDefaultCMSData();
     return {
       ...defaults,
       ...parsed,
@@ -772,11 +794,11 @@ export function loadCMSData(): CMSData {
         ...defaults.llm,
         ...(parsed.llm || {}),
       },
-      services: Array.isArray(parsed.services) && parsed.services.length > 0 ? parsed.services : defaults.services,
+      services: Array.isArray(parsed.services) && parsed.services.length >= 12 ? parsed.services : defaults.services,
       caseStudies:
-        Array.isArray(parsed.caseStudies) && parsed.caseStudies.length > 0 ? parsed.caseStudies : defaults.caseStudies,
-      careers: Array.isArray(parsed.careers) && parsed.careers.length > 0 ? parsed.careers : defaults.careers,
-      blogs: Array.isArray(parsed.blogs) && parsed.blogs.length > 0 ? parsed.blogs : defaults.blogs,
+        Array.isArray(parsed.caseStudies) && parsed.caseStudies.length >= 10 ? parsed.caseStudies : defaults.caseStudies,
+      careers: Array.isArray(parsed.careers) && parsed.careers.length >= 5 ? parsed.careers : defaults.careers,
+      blogs: Array.isArray(parsed.blogs) && parsed.blogs.length >= 10 ? parsed.blogs : defaults.blogs,
       contactPage: {
         ...defaults.contactPage,
         ...(parsed.contactPage || {}),
@@ -796,7 +818,7 @@ export function loadCMSData(): CMSData {
     };
   } catch (err) {
     console.error('Failed to parse CMS data from localStorage:', err);
-    return getDefaultCMSData();
+    return defaults;
   }
 }
 

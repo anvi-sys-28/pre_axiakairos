@@ -181,16 +181,66 @@ html.dark .nav-box-item.text-link:hover {
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--ink);
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transition: color 0.25s ease;
 }
 
 .nav-datetime-date {
   font-size: 11px;
   font-weight: 400;
-  opacity: 0.72;
+  opacity: 0.88 !important;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
-  color: var(--ink);
+  color: rgba(255, 255, 255, 0.88) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+/* White Date & Time when over Section 2 (#141414), dark sections, or in dark theme */
+.in-section-2 .nav-datetime-day,
+.nav-over-dark .nav-datetime-day,
+.halden-nav.in-section-2 .nav-datetime-day,
+.halden-nav.nav-over-dark .nav-datetime-day,
+.nav.in-section-2 .nav-datetime-day,
+.nav.nav-over-dark .nav-datetime-day,
+html.dark .nav-datetime-day {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+.in-section-2 .nav-datetime-date,
+.nav-over-dark .nav-datetime-date,
+.halden-nav.in-section-2 .nav-datetime-date,
+.halden-nav.nav-over-dark .nav-datetime-date,
+.nav.in-section-2 .nav-datetime-date,
+.nav.nav-over-dark .nav-datetime-date,
+html.dark .nav-datetime-date {
+  color: rgba(255, 255, 255, 0.88) !important;
+  opacity: 0.88 !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+.in-section-2 .halden-theme-btn,
+.nav-over-dark .halden-theme-btn,
+.halden-nav.in-section-2 .halden-theme-btn,
+.halden-nav.nav-over-dark .halden-theme-btn,
+.nav.in-section-2 .halden-theme-btn,
+.nav.nav-over-dark .halden-theme-btn,
+html.dark .halden-theme-btn {
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.in-section-2 .halden-theme-btn svg,
+.nav-over-dark .halden-theme-btn svg,
+.halden-nav.in-section-2 .halden-theme-btn svg,
+.halden-nav.nav-over-dark .halden-theme-btn svg,
+.nav.in-section-2 .halden-theme-btn svg,
+.nav.nav-over-dark .halden-theme-btn svg,
+html.dark .halden-theme-btn svg {
+  color: #ffffff !important;
 }
 
 /* Solid Oceanic Teal Contact Us Button with ↗ Arrow */

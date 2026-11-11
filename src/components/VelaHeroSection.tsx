@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowDown, ArrowUpRight } from 'lucide-react';
 import '@/styles/vela-hero.css';
 
 export interface VelaStatItem {
@@ -24,47 +26,47 @@ interface VelaWordSlot {
 
 const VELA_SLOTS: VelaWordSlot[] = [
   {
-    word: 'Message',
+    word: 'Transform',
     icon: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/83de7c35-dd91-4e56-bfb8-0ffafc83d0e0.webp',
-    tint: '#E9C22E',
+    tint: '#0c7075',
     layerClass: 'vela-layer-message',
   },
   {
-    word: 'Browse',
+    word: 'Modernize',
     icon: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4d952211-0474-48cc-af48-58f68b3b7525.webp',
-    tint: '#F2772F',
+    tint: '#0891b2',
     layerClass: 'vela-layer-browse',
   },
   {
-    word: 'Transact',
+    word: 'Automate',
     icon: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/e2e91fca-5b3f-4e0e-a437-8a581592e407.webp',
-    tint: '#3FB874',
+    tint: '#10b981',
     layerClass: 'vela-layer-transact',
   },
   {
-    word: 'Build web',
+    word: 'Accelerate',
     icon: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/6b32bb47-4ad6-4938-a637-c997b373c68b.webp',
-    tint: '#C564C4',
+    tint: '#6366f1',
     layerClass: 'vela-layer-buildweb',
   },
 ];
 
 const DEFAULT_STATS: VelaStatItem[] = [
-  { number: '11.5M+', label: 'Active accounts' },
-  { number: '$0.0002', label: 'Average cost per transaction' },
-  { number: '80+', label: 'Dapps integrations' },
+  { number: '99.9%', label: 'Application & cloud continuity' },
+  { number: '100+', label: 'Enterprise modernizations delivered' },
+  { number: '4', label: 'Global delivery hubs (Canada, USA, UAE, India)' },
 ];
 
 export const VelaHeroSection: React.FC<VelaHeroProps> = ({
   pageEyebrow,
-  line2 = 'in your terms',
+  line2 = 'your digital future',
   caption = (
     <>
-      Vela is a secure messaging app, crypto wallet, and<br />
-      Web3 browser built with state of the art technology.
+      Axia Kairos combines strategic management consulting with next-generation<br />
+      enterprise technology to transform operations and drive measurable ROI.
     </>
   ),
-  stripHeading = 'Nothing great is\nmade alone',
+  stripHeading = 'Engineering Value\nAt Critical Moments',
   stats = DEFAULT_STATS,
   scrollTargetId,
 }) => {
@@ -117,7 +119,6 @@ export const VelaHeroSection: React.FC<VelaHeroProps> = ({
   }, []);
 
   const activeSlot = VELA_SLOTS[activeIndex];
-  const isAppStoreFlash = activeSlot.word === 'Build web';
 
   const handleScrollClick = () => {
     if (scrollTargetId) {
@@ -213,32 +214,25 @@ export const VelaHeroSection: React.FC<VelaHeroProps> = ({
             </h1>
           </div>
 
-          {/* Action Row: Two Store Buttons + Caption */}
+          {/* Action Row: Enterprise CTAs + Caption */}
           <div className="vela-row">
             <div className="vela-buttons-group">
-              {/* App Store Button (Neutral Line Apple Glyph) */}
               <button
                 type="button"
-                className={`vela-store-btn ${isAppStoreFlash ? 'app-store-flash' : ''}`}
-                aria-label="Download on the App Store"
+                onClick={handleScrollClick}
+                className="vela-cta-btn vela-cta-primary"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.64 1.35-.57.65-1.07 1.72-.94 2.74 1.01.08 2.03-.49 2.65-1.24z" />
-                </svg>
-                <span>App Store</span>
+                <span>Explore Capabilities</span>
+                <ArrowDown className="w-4 h-4 ml-1.5" />
               </button>
 
-              {/* Google Play Button (Neutral Line Play Triangle Glyph) */}
-              <button
-                type="button"
-                className="vela-store-btn"
-                aria-label="Get it on Google Play"
+              <Link
+                to="/contact"
+                className="vela-cta-btn vela-cta-secondary"
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M5.5 3.5l13 8.5-13 8.5v-17z" fill="none" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
-                </svg>
-                <span>Google Play</span>
-              </button>
+                <span>Talk to Our Experts</span>
+                <ArrowUpRight className="w-4 h-4 ml-1.5" />
+              </Link>
             </div>
 
             {/* 2-line Caption */}

@@ -17,7 +17,7 @@ import heroSlide3Image from '../assets/hero-slide-3.webp';
 
 export function CaseStudiesIndexPage() {
   const cms = useCMS();
-  const caseStudiesList = cms.caseStudies && cms.caseStudies.length > 0 ? cms.caseStudies : caseStudies;
+  const caseStudiesList = cms.caseStudies && cms.caseStudies.length >= 10 ? cms.caseStudies : caseStudies;
   const [searchParams, setSearchParams] = useSearchParams();
   const activeIndustryParam = searchParams.get('industry') || 'All';
   const [searchQuery, setSearchQuery] = useState('');
@@ -98,7 +98,20 @@ export function CaseStudiesIndexPage() {
 
         {/* 1. VELA HERO SECTION */}
         <VelaHeroSection
-          pageEyebrow="Client Success & Transformation"
+          pageEyebrow="SAP & Cloud Transformation Case Studies"
+          line2="real enterprise outcomes"
+          caption={
+            <>
+              Explore how forward-thinking enterprises partner with Axia Kairos to migrate to<br />
+              SAP S/4HANA, modernize multi-cloud infrastructure, and automate mission-critical operations.
+            </>
+          }
+          stripHeading={'Measurable Impact\nValidated Globally'}
+          stats={[
+            { number: '100%', label: 'On-schedule enterprise project delivery' },
+            { number: '3x', label: 'Faster reporting & executive decision cycles' },
+            { number: '10+', label: 'Global and regulated industries transformed' },
+          ]}
           scrollTargetId="case-studies-grid"
         />
 

@@ -225,6 +225,44 @@
       font-variant-numeric: tabular-nums;
       color: var(--ink);
     }
+    /* White Date & Time when over Section 2 (#141414), dark sections, or in dark theme */
+    .in-section-2 .nav-datetime-day,
+    .nav-over-dark .nav-datetime-day,
+    .nav.in-section-2 .nav-datetime-day,
+    .nav.nav-over-dark .nav-datetime-day,
+    html.dark .nav-datetime-day {
+      color: #ffffff !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+    }
+
+    .in-section-2 .nav-datetime-date,
+    .nav-over-dark .nav-datetime-date,
+    .nav.in-section-2 .nav-datetime-date,
+    .nav.nav-over-dark .nav-datetime-date,
+    html.dark .nav-datetime-date {
+      color: rgba(255, 255, 255, 0.88) !important;
+      opacity: 0.88 !important;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+    }
+
+    .in-section-2 .theme-btn,
+    .nav-over-dark .theme-btn,
+    .nav.in-section-2 .theme-btn,
+    .nav.nav-over-dark .theme-btn,
+    html.dark .theme-btn {
+      color: #ffffff !important;
+      border-color: rgba(255, 255, 255, 0.25) !important;
+      background: rgba(255, 255, 255, 0.1) !important;
+    }
+
+    .in-section-2 .theme-btn svg,
+    .nav-over-dark .theme-btn svg,
+    .nav.in-section-2 .theme-btn svg,
+    .nav.nav-over-dark .theme-btn svg,
+    html.dark .theme-btn svg {
+      color: #ffffff !important;
+    }
+
 
     /* Solid Oceanic Teal Contact Us Button with ↗ Arrow */
     .nav-contact-box-btn {
@@ -3299,20 +3337,6 @@
   </style>
 </head>
 <body>
-  <!-- Axia Kairos Executive Preloader -->
-  <div id="axiaPreloader" class="axia-preloader-root" aria-live="polite" aria-busy="true">
-    <div class="axia-preloader-glow" aria-hidden="true"></div>
-    <div class="axia-preloader-center">
-      <div class="axia-preloader-brand">
-        <span class="axia-preloader-part1">AXIA</span>
-        <span class="axia-preloader-tm">®</span>
-        <span class="axia-preloader-part2">KAIROS</span>
-      </div>
-      <div class="axia-preloader-line"></div>
-      <p class="axia-preloader-tagline">Strategy that moves you forward.</p>
-    </div>
-    <div class="axia-preloader-beacon"></div>
-  </div>
   <!-- Atmosphere Background Canvas (240x150 upscaled with blur filter) -->
   <div class="atmo">
     <canvas id="bg" width="240" height="150"></canvas>
@@ -4612,18 +4636,6 @@
 
   <script>
     (function () {
-      // Axia Kairos Preloader Auto-Exit
-      setTimeout(function () {
-        var preloader = document.getElementById('axiaPreloader');
-        if (preloader) {
-          preloader.classList.add('is-exiting');
-          setTimeout(function () {
-            if (preloader.parentNode) {
-              preloader.parentNode.removeChild(preloader);
-            }
-          }, 800);
-        }
-      }, 1900);
       // Mobile Drawer Toggle
       const burger = document.getElementById('haldenBurger');
       const drawer = document.getElementById('haldenMobileDrawer');
@@ -5232,6 +5244,18 @@
           nav.classList.add('scrolled');
         } else {
           nav.classList.remove('scrolled');
+        }
+
+        // Section 2 (#141414 dark background) detector to keep Date/Time white and visible
+        const scene2 = document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+        const inSec2 = scene2 ? (scene2.getBoundingClientRect().top <= 140) : (window.scrollY >= 120);
+
+        if (inSec2 || (window.scrollY >= 120)) {
+          nav.classList.add('in-section-2');
+          nav.classList.add('nav-over-dark');
+        } else {
+          nav.classList.remove('in-section-2');
+          nav.classList.remove('nav-over-dark');
         }
 
         // Entire Section 1 uniform fade out ONLY when scrolling and entering Section 2 second time

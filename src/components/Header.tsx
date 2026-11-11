@@ -14,6 +14,18 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(({ onCtaClick }, ref)
   const location = useLocation();
   const navigate = useNavigate();
   const { navLinks } = siteContent.header;
+  const isHomePage = location.pathname === '/';
+
+  const [isOverDark, setIsOverDark] = useState<boolean>(() => {
+    if (typeof window !== 'undefined') {
+      return (
+        window.location.pathname === '/' ||
+        document.documentElement.classList.contains('dark') ||
+        window.scrollY >= 100
+      );
+    }
+    return true;
+  });
 
   // Live dynamic Date & Time for Header (e.g. "Saturday", "18:51 · 7 NOVEMBER 2026")
   const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
@@ -85,13 +97,22 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(({ onCtaClick }, ref)
     };
   }, []);
 
-  // Listen to scroll to update scrolled state
+  // Listen to scroll to update scrolled and over-dark state
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 20);
+          const sy = window.scrollY;
+          setIsScrolled(sy > 20);
+          const scene2 = document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+          const ih = Math.max(window.innerHeight, 1);
+          // Once scrolled past hero crest (sy >= 120) or scene 2 is entering top, navbar is always over dark background
+          const inSec2 = scene2
+            ? scene2.getBoundingClientRect().top <= 140
+            : sy >= ih * 0.22;
+          const isDarkTheme = document.documentElement.classList.contains('dark');
+          setIsOverDark(isHomePage || inSec2 || isDarkTheme || sy >= 100);
           ticking = false;
         });
         ticking = true;
@@ -146,7 +167,7 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(({ onCtaClick }, ref)
     <>
       <header
         ref={ref}
-        className={`halden-nav ${isScrolled ? 'scrolled' : ''}`}
+        className={`halden-nav ${isScrolled ? 'scrolled' : ''} ${isOverDark ? 'in-section-2 nav-over-dark' : ''}`}
         id="nav"
         role="banner"
       >

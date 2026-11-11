@@ -454,6 +454,18 @@ export const HaldenLanding: React.FC = () => {
         navEl.classList.remove('scrolled');
       }
 
+      // Section 2 (#141414 dark background) detector to keep Date/Time white and visible
+      const scene2 = document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+      const inSec2 = scene2 ? (scene2.getBoundingClientRect().top <= 140) : (window.scrollY >= 120);
+
+      if (inSec2 || (window.scrollY >= 120)) {
+        navEl.classList.add('in-section-2');
+        navEl.classList.add('nav-over-dark');
+      } else {
+        navEl.classList.remove('in-section-2');
+        navEl.classList.remove('nav-over-dark');
+      }
+
       // Entire Section 1 uniform fade out ONLY when scrolling and entering Section 2 second time
       // Starts at 5% of scroll (q = 0.05) and smoothly fades over a balanced, silky span (0.24)
       const heroFadeProgress = stmtAnimDone ? Math.min(1, Math.max(0, (q - 0.05) / 0.24)) : 0;

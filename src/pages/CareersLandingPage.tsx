@@ -38,7 +38,7 @@ function formatPublishDate(isoDate: string): string {
 
 export const CareersLandingPage: React.FC = () => {
   const cms = useCMS();
-  const jobsList = cms.careers && cms.careers.length > 0 ? cms.careers : jobs;
+  const jobsList = cms.careers && cms.careers.length >= 5 ? cms.careers : jobs;
   const navigate = useNavigate();
   const [selectedDept, setSelectedDept] = useState<Department>('All Departments');
 
@@ -116,7 +116,20 @@ export const CareersLandingPage: React.FC = () => {
       <main className="w-full flex-1">
         {/* 1. VELA HERO SECTION */}
         <VelaHeroSection
-          pageEyebrow="Careers & Culture"
+          pageEyebrow="Careers at Axia Kairos"
+          line2="your career with purpose"
+          caption={
+            <>
+              Join a global team of architects, SAP consultants, data engineers, and digital<br />
+              transformation leaders shaping enterprise innovation across Canada, the US, UAE, and India.
+            </>
+          }
+          stripHeading={'Where Deep Expertise\nMeets Real Impact'}
+          stats={[
+            { number: '4', label: 'Global delivery hubs (Canada, USA, UAE, India)' },
+            { number: '100%', label: 'Merit, innovation & growth-focused culture' },
+            { number: '4.9★', label: 'Global employee experience and trust' },
+          ]}
           scrollTargetId="open-positions"
         />
 

@@ -26,7 +26,7 @@ const serviceImageMap: Record<string, string> = {
 
 export function ServicesIndexPage() {
   const cms = useCMS();
-  const servicesList = cms.services && cms.services.length > 0 ? cms.services : servicesData;
+  const servicesList = cms.services && cms.services.length >= 12 ? cms.services : servicesData;
   const [searchParams] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState(() => searchParams.get('q') || '');
 
@@ -89,7 +89,20 @@ export function ServicesIndexPage() {
         
         {/* 1. VELA HERO SECTION */}
         <VelaHeroSection
-          pageEyebrow="Enterprise Services & Capabilities"
+          pageEyebrow="IT & Digital Transformation Services"
+          line2="your enterprise operations"
+          caption={
+            <>
+              At Axia Kairos, we combine management consulting expertise with next-generation<br />
+              technologies to help enterprises transform operations and accelerate sustainable business growth.
+            </>
+          }
+          stripHeading={'Engineering Value\nAt Critical Moments'}
+          stats={[
+            { number: '99.9%', label: 'Mission-critical application continuity' },
+            { number: '40%+', label: 'Operational workflow cost reduction' },
+            { number: '12', label: 'End-to-end enterprise service domains' },
+          ]}
           scrollTargetId="services-list"
         />
 

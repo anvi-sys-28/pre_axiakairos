@@ -12,7 +12,7 @@ const POSTS_PER_PAGE = 9;
 
 export function BlogsIndexPage() {
   const cms = useCMS();
-  const blogsList = cms.blogs && cms.blogs.length > 0 ? cms.blogs : blogs;
+  const blogsList = cms.blogs && cms.blogs.length >= 10 ? cms.blogs : blogs;
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOrder, setSortOrder] = useState<'latest' | 'oldest'>('latest');
   const [visibleCount, setVisibleCount] = useState(POSTS_PER_PAGE);
@@ -87,6 +87,19 @@ export function BlogsIndexPage() {
         {/* 1. VELA HERO SECTION */}
         <VelaHeroSection
           pageEyebrow="Thought Leadership & Research"
+          line2="the future of enterprise tech"
+          caption={
+            <>
+              Explore expert perspectives, architecture blueprints, and strategic roadmaps from<br />
+              Axia Kairos consultants across AI, SAP modernization, cloud platforms, and cyber resilience.
+            </>
+          }
+          stripHeading={'Actionable Perspectives\nFor Industry Leaders'}
+          stats={[
+            { number: '50+', label: 'Technical architecture & strategy guides' },
+            { number: '12+', label: 'Enterprise technology and industry sectors' },
+            { number: '10k+', label: 'Enterprise executives and IT readers' },
+          ]}
           scrollTargetId="explore-articles"
         />
 
