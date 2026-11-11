@@ -165,9 +165,9 @@ html.dark .vela-grain-overlay {
   position: relative;
   z-index: 4;
   width: 100%;
-  max-width: calc(1320 * var(--u));
-  margin: 0 auto;
-  padding: calc(36 * var(--u)) calc(48 * var(--u)) calc(32 * var(--u));
+  max-width: 100%;
+  margin: 0;
+  padding: calc(36 * var(--u)) var(--gut, clamp(24px, 5.7vw, 82px)) calc(32 * var(--u));
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -180,7 +180,7 @@ html.dark .vela-grain-overlay {
   display: inline-flex;
   align-items: center;
   gap: calc(8 * var(--u));
-  font-size: calc(12 * var(--u));
+  font-size: calc(11.4 * var(--u));
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -199,7 +199,7 @@ html.dark .vela-grain-overlay {
 .vela-headline {
   margin: 0;
   padding: 0;
-  font-size: calc(142 * var(--u));
+  font-size: calc(135 * var(--u));
   line-height: 0.88;
   letter-spacing: -0.034em;
   font-weight: 500;
@@ -357,7 +357,7 @@ html.dark .vela-grain-overlay {
   padding: 0 calc(24 * var(--u));
   border-radius: 999px;
   font-family: 'Inter Tight', sans-serif;
-  font-size: calc(15.5 * var(--u));
+  font-size: calc(14.7 * var(--u));
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -427,7 +427,7 @@ html.dark .vela-cta-secondary:hover {
 
 /* 2-Line Caption */
 .vela-caption {
-  font-size: calc(18.5 * var(--u));
+  font-size: calc(17.5 * var(--u));
   line-height: 1.42;
   color: var(--vela-secondary);
   font-weight: 400;
@@ -465,13 +465,13 @@ html.dark .vela-cta-secondary:hover {
 /* Scroll Hint sitting on the raised right part of the notch */
 .vela-scroll-hint-btn {
   position: absolute;
-  right: calc(48 * var(--u));
+  right: var(--gut, clamp(24px, 5.7vw, 82px));
   top: calc(-48 * var(--u));
   background: transparent;
   border: none;
   color: var(--vela-scroll-hint);
   font-family: 'Inter Tight', sans-serif;
-  font-size: calc(15 * var(--u));
+  font-size: calc(14.25 * var(--u));
   font-weight: 500;
   display: inline-flex;
   align-items: center;
@@ -489,9 +489,9 @@ html.dark .vela-cta-secondary:hover {
 
 /* Stats Strip Content Grid */
 .vela-strip-content {
-  max-width: calc(1320 * var(--u));
-  margin: 0 auto;
-  padding: calc(32 * var(--u)) calc(48 * var(--u)) calc(48 * var(--u));
+  max-width: 100%;
+  margin: 0;
+  padding: calc(32 * var(--u)) var(--gut, clamp(24px, 5.7vw, 82px)) calc(48 * var(--u));
   display: grid;
   grid-template-columns: 1.2fr 2fr auto;
   align-items: center;
@@ -501,7 +501,7 @@ html.dark .vela-cta-secondary:hover {
 
 /* Left Message: "Nothing great is / made alone" */
 .vela-strip-heading {
-  font-size: calc(29 * var(--u));
+  font-size: calc(27.5 * var(--u));
   line-height: 1.18;
   font-weight: 500;
   color: var(--vela-ink);
@@ -523,7 +523,7 @@ html.dark .vela-cta-secondary:hover {
 }
 
 .vela-stat-number {
-  font-size: calc(52 * var(--u));
+  font-size: calc(49.4 * var(--u));
   line-height: 1;
   font-weight: 500;
   letter-spacing: -0.03em;
@@ -531,7 +531,7 @@ html.dark .vela-cta-secondary:hover {
 }
 
 .vela-stat-label {
-  font-size: calc(16.5 * var(--u));
+  font-size: calc(15.6 * var(--u));
   line-height: 1.25;
   color: var(--vela-secondary);
   font-weight: 400;
@@ -565,7 +565,7 @@ html.dark .vela-cta-secondary:hover {
   }
 
   .vela-headline {
-    font-size: clamp(48px, 14vw, 84px);
+    font-size: clamp(45px, 13.3vw, 80px);
     line-height: 0.95;
   }
 
@@ -592,12 +592,12 @@ html.dark .vela-cta-secondary:hover {
 
   .vela-store-btn {
     height: 48px;
-    font-size: 14px;
+    font-size: 13.3px;
     padding: 0 18px;
   }
 
   .vela-caption {
-    font-size: 16px;
+    font-size: 15.2px;
     max-width: 100%;
   }
 
@@ -608,7 +608,7 @@ html.dark .vela-cta-secondary:hover {
   .vela-scroll-hint-btn {
     top: -34px;
     right: 16px;
-    font-size: 13px;
+    font-size: 12.3px;
   }
 
   .vela-strip-content {
@@ -618,7 +618,7 @@ html.dark .vela-cta-secondary:hover {
   }
 
   .vela-strip-heading {
-    font-size: 24px;
+    font-size: 22.8px;
   }
 
   .vela-stats-grid {
@@ -628,11 +628,11 @@ html.dark .vela-cta-secondary:hover {
   }
 
   .vela-stat-number {
-    font-size: 38px;
+    font-size: 36px;
   }
 
   .vela-stat-label {
-    font-size: 14px;
+    font-size: 13.3px;
   }
 
   .vela-sprout-art {
