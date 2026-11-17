@@ -3,20 +3,22 @@
    Responsive Light & Dark Theme System
    ========================================================================== */
 
-/* Section 2: Enterprise Generative AI Section (#141414 Black Background) */
+/* Section 2: Enterprise Generative AI Section (Light: #faf8f5 Cream, Dark: #141414, Fits 100vh) */
 .genai-about-section {
   position: relative;
   width: 100%;
+  height: 100vh;
   min-height: 100vh;
-  background: #141414 !important;
-  color: #FFFFFF !important;
+  max-height: 100vh;
+  background: #faf8f5;
+  color: #0f172a;
   overflow: hidden;
   box-sizing: border-box;
-  padding: 80px var(--gut, 5vw) 100px;
+  padding: clamp(64px, 7.8vh, 80px) 0 clamp(8px, 1.2vh, 16px) 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  justify-content: space-between;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, color 0.3s ease;
 }
 
 .genai-about-section.is-layered {
@@ -35,6 +37,22 @@
 html.dark .genai-about-section {
   background: #141414 !important;
   color: #FFFFFF !important;
+}
+
+/* ==========================================================================
+   Continuous Scrolling Files Track (Seamlessly Embedded in Layer 2, No Lines)
+   ========================================================================== */
+.genai-files-marquee-section {
+  position: relative;
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: clamp(6px, 1.2vh, 12px);
+  padding: 0 0 2px;
+  overflow: hidden;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  flex-shrink: 0;
 }
 
 /* Background Atmospheric Aura - Warm Cream & Amber on #141414 */
@@ -59,34 +77,182 @@ html.dark .genai-atmo-glow {
   background: radial-gradient(circle, rgba(253, 246, 226, 0.08) 0%, rgba(212, 163, 115, 0.04) 45%, rgba(20, 20, 20, 0) 70%);
 }
 
-/* Container Grid: Left (Thinking Orbs) & Right (About Text & Solution Stream) */
+/* ==========================================================================
+   Section 2 Layer 2 Layout:
+   Left: About Us -> Orby Animation -> Orby Changing Text (Down of Orby Animation)
+   Right: Flow Color Toggle -> React Flow Blueprint -> Connection Stack
+   ========================================================================== */
+.genai-section2-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: clamp(300px, 32%, 400px) minmax(0, 1fr);
+  gap: clamp(16px, 2.4vw, 36px);
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 var(--gut, 5vw);
+  box-sizing: border-box;
+  align-items: stretch;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Left Column */
+.genai-col-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 0;
+  gap: clamp(8px, 1.2vh, 16px);
+  background: transparent;
+  padding: 0;
+}
+
+.genai-about-info {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Orby Animation Chamber Container */
+.genai-orb-chamber-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 0;
+}
+
+/* Orby Changing Text (Kept Directly Down of Orby Animation - Completely Free from Box) */
+.genai-orby-text-card {
+  display: flex;
+  flex-direction: column;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: all 0.3s ease;
+}
+
+/* Right Column (Borderless & Seamless) */
+.genai-col-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 0;
+  gap: 8px;
+  min-width: 0;
+}
+
+.genai-reactflow-box {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  overflow: visible !important;
+}
+
+/* Use Automate Flows Colors Checkbox Toggle */
+.genai-brand-preset-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #bfced5;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+.genai-brand-preset-toggle:hover {
+  color: #ffffff;
+}
+.genai-brand-preset-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  display: inline-grid;
+  place-content: center;
+  margin: 0;
+}
+.genai-brand-preset-toggle input[type="checkbox"]:checked {
+  background: #2ff59b;
+  border-color: #2ff59b;
+}
+.genai-brand-preset-toggle input[type="checkbox"]:checked::after {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid #08120d;
+  border-bottom: 2px solid #08120d;
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+@media (max-width: 1024px) {
+  .genai-section2-layout {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .genai-reactflow-box {
+    height: 520px;
+  }
+}
+
+/* Container Grid fallback */
 .genai-grid-container {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 46% 54%;
-  gap: clamp(32px, 4.5vw, 64px);
+  grid-template-columns: clamp(220px, 20vw, 280px) minmax(0, 1fr);
+  gap: clamp(16px, 2.5vw, 36px);
   align-items: center;
   max-width: 1440px;
   margin: 0 auto;
   width: 100%;
+  padding: 0 var(--gut, 5vw);
+  box-sizing: border-box;
+  flex: 1;
+  min-height: 0;
+}
+
+.genai-blueprint-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
 }
 
 /* ==========================================================================
-   LEFT COLUMN: Thinking Orbs (Circles Removed)
+   LEFT COLUMN: Thinking Orbs
    ========================================================================== */
 .genai-orbs-column {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 24px;
+  gap: clamp(4px, 0.9vh, 8px);
 }
 
-/* AI Orb Stage Chamber: Clean stage with NO circles or concentric rings (20% size increase) */
+/* AI Orb Stage Chamber: Scaled to fit single screen comfortably */
 .genai-orb-chamber {
   position: relative;
-  width: 340px;
-  height: 340px;
+  width: clamp(190px, 23vh, 260px);
+  height: clamp(190px, 23vh, 260px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,16 +263,16 @@ html.dark .genai-atmo-glow {
   -webkit-backdrop-filter: none !important;
 }
 
-/* Center Thinking Orb Container - 20% size increase */
+/* Center Thinking Orb Container - Increased by +10% (scale 2.6 -> 2.86) */
 .genai-main-orb-wrapper {
   position: relative;
   z-index: 2;
-  width: 230px;
-  height: 230px;
+  width: 150px;
+  height: 150px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: scale(3.36);
+  transform: scale(2.86);
   transform-origin: center center;
 }
 
@@ -116,9 +282,9 @@ html.dark .genai-atmo-glow {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-top: 4px;
-  gap: 6px;
-  max-width: 380px;
+  margin-top: 2px;
+  gap: 2px;
+  max-width: 320px;
 }
 
 .genai-active-state-badge {
@@ -164,28 +330,28 @@ html.dark .genai-active-state-tag {
 }
 
 .genai-active-state-title {
-  font-size: clamp(24px, 2.4vw, 32px);
+  font-size: clamp(17px, 1.8vw, 22px);
   font-weight: 700;
   letter-spacing: -0.025em;
   margin: 0;
   line-height: 1.15;
   color: #FDF6E2 !important;
-  text-shadow: 0 0 24px rgba(253, 246, 226, 0.45);
+  text-shadow: 0 0 20px rgba(253, 246, 226, 0.45);
   transition: color 0.35s ease;
 }
 
 .dark .genai-active-state-title,
 html.dark .genai-active-state-title {
   color: #FDF6E2 !important;
-  text-shadow: 0 0 24px rgba(253, 246, 226, 0.55);
+  text-shadow: 0 0 20px rgba(253, 246, 226, 0.55);
 }
 
 .genai-active-state-desc {
-  font-size: 13.5px;
-  line-height: 1.5;
+  font-size: clamp(11px, 0.85vw, 12px);
+  line-height: 1.35;
   color: #94a3b8 !important;
   margin: 0;
-  max-width: 360px;
+  max-width: 280px;
   transition: color 0.3s ease;
 }
 
@@ -200,7 +366,8 @@ html.dark .genai-active-state-desc {
 .genai-content-column {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: clamp(4px, 0.8vh, 8px);
+  min-height: 0;
 }
 
 /* Eyebrow Badge */
@@ -208,13 +375,13 @@ html.dark .genai-active-state-desc {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: #0284c7;
   background: rgba(2, 132, 199, 0.08);
-  padding: 6px 14px;
+  padding: 4px 12px;
   border-radius: 999px;
   border: 1px solid rgba(2, 132, 199, 0.22);
   width: fit-content;
@@ -237,7 +404,7 @@ html.dark .genai-eyebrow {
 
 /* Main Section Title */
 .genai-main-title {
-  font-size: clamp(28px, 3.2vw, 42px);
+  font-size: clamp(18px, 1.9vw, 27px);
   font-weight: 700;
   letter-spacing: -0.025em;
   color: #FFFFFF !important;
@@ -253,17 +420,17 @@ html.dark .genai-main-title {
 
 /* Typing Lead Text */
 .genai-typing-container {
-  min-height: 2.2em;
+  min-height: 1.35em;
   display: flex;
   align-items: center;
 }
 
 .genai-typing-lead {
-  font-size: clamp(16px, 1.4vw, 20px);
+  font-size: clamp(12.5px, 0.95vw, 14.5px);
   font-weight: 600;
   color: #FDF6E2 !important;
   margin: 0;
-  line-height: 1.4;
+  line-height: 1.25;
   letter-spacing: -0.01em;
   text-shadow: 0 0 16px rgba(253, 246, 226, 0.25);
   transition: color 0.3s ease;
@@ -289,11 +456,11 @@ html.dark .genai-typing-lead {
 
 /* Lead Description */
 .genai-lead-desc {
-  font-size: clamp(14px, 1.15vw, 16px);
-  line-height: 1.6;
+  font-size: clamp(11px, 0.78vw, 12.5px);
+  line-height: 1.38;
   color: #94a3b8 !important;
   margin: 0;
-  max-width: 600px;
+  max-width: 580px;
   transition: color 0.3s ease;
 }
 
@@ -302,18 +469,81 @@ html.dark .genai-lead-desc {
   color: #94a3b8 !important;
 }
 
-/* Solutions Stream Box on #141414 */
+/* Simple Changing Text Box (Clean capability cycler replacing scrolling cards) */
+.genai-changing-text-box {
+  position: relative;
+  width: 100%;
+  min-height: 72px;
+  background: rgba(255, 255, 255, 0.035) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.35);
+  transition: all 0.3s ease;
+}
+
+.dark .genai-changing-text-box,
+html.dark .genai-changing-text-box {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.genai-changing-text-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.genai-changing-text-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.genai-changing-text-title {
+  font-size: clamp(13px, 1.05vw, 15px);
+  font-weight: 600;
+  color: #FFFFFF !important;
+  margin: 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.dark .genai-changing-text-title,
+html.dark .genai-changing-text-title {
+  color: #FFFFFF !important;
+}
+
+.genai-changing-text-desc {
+  font-size: clamp(11px, 0.8vw, 12px);
+  color: #94a3b8 !important;
+  line-height: 1.35;
+  margin: 0;
+  max-width: 580px;
+}
+
+.dark .genai-changing-text-desc,
+html.dark .genai-changing-text-desc {
+  color: #94a3b8 !important;
+}
+
+/* Solutions Stream Box on #141414 (Fallback) */
 .genai-solutions-stream {
   position: relative;
   width: 100%;
-  height: 290px;
+  height: clamp(120px, 16vh, 165px);
   overflow: hidden;
-  border-radius: 14px;
+  border-radius: 10px;
   background: rgba(255, 255, 255, 0.03) !important;
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.6) !important;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 14%, black 86%, transparent 100%);
   transition: all 0.3s ease;
 }
 
@@ -327,7 +557,7 @@ html.dark .genai-solutions-stream {
 .genai-solutions-scroll-track {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
   animation: streamTopToBottom 24s linear infinite;
   will-change: transform;
 }
@@ -345,11 +575,11 @@ html.dark .genai-solutions-stream {
 .genai-solution-card {
   background: rgba(255, 255, 255, 0.04) !important;
   border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  border-radius: 10px;
-  padding: 14px 18px;
+  border-radius: 8px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
   transition: all 0.25s ease;
   backdrop-filter: blur(8px);
 }
@@ -381,13 +611,13 @@ html.dark .genai-solution-card:hover {
 }
 
 .genai-sol-idx {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: #FDF6E2 !important;
   background: rgba(253, 246, 226, 0.1) !important;
   border: 1px solid rgba(253, 246, 226, 0.2);
-  padding: 2px 7px;
+  padding: 1px 5px;
   border-radius: 4px;
 }
 
@@ -399,7 +629,7 @@ html.dark .genai-sol-idx {
 }
 
 .genai-sol-badge {
-  font-size: 11px;
+  font-size: 9.5px;
   color: #94a3b8 !important;
   font-weight: 500;
 }
@@ -410,11 +640,12 @@ html.dark .genai-sol-badge {
 }
 
 .genai-sol-title {
-  font-size: 15px;
+  font-size: clamp(12px, 0.9vw, 13px);
   font-weight: 600;
   color: #FFFFFF !important;
   margin: 0;
   letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 .dark .genai-sol-title,
@@ -423,9 +654,9 @@ html.dark .genai-sol-title {
 }
 
 .genai-sol-desc {
-  font-size: 12.5px;
+  font-size: clamp(10.5px, 0.75vw, 11.5px);
   color: #94a3b8 !important;
-  line-height: 1.45;
+  line-height: 1.32;
   margin: 0;
 }
 
@@ -438,8 +669,8 @@ html.dark .genai-sol-desc {
 .genai-action-row {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-top: 8px;
+  gap: 10px;
+  margin-top: clamp(2px, 0.5vh, 6px);
 }
 
 .genai-explore-btn {
@@ -448,10 +679,10 @@ html.dark .genai-sol-desc {
   gap: 8px;
   background: #FDF6E2 !important;
   color: #141414 !important;
-  font-size: 13.5px;
+  font-size: 12px;
   font-weight: 600;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 6px 16px;
+  border-radius: 7px;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-shadow: 0 2px 14px rgba(253, 246, 226, 0.2);
@@ -483,10 +714,10 @@ html.dark .genai-explore-btn:hover {
   background: rgba(253, 246, 226, 0.05);
   border: 1px solid rgba(253, 246, 226, 0.25);
   color: #FDF6E2 !important;
-  font-size: 13px;
+  font-size: 11.5px;
   font-weight: 500;
-  padding: 9px 16px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 7px;
   text-decoration: none;
   transition: all 0.2s ease;
 }
@@ -539,11 +770,11 @@ html.dark .genai-external-link:hover {
   }
 
   .genai-orb-chamber {
-    width: 220px;
-    height: 220px;
+    width: 270px;
+    height: 270px;
   }
 
   .genai-main-orb-wrapper {
-    transform: scale(2.2);
+    transform: scale(2.8);
   }
 }

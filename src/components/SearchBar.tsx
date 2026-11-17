@@ -155,19 +155,19 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   return (
     <div ref={containerRef} className={`relative w-full max-w-[580px] ${isOpen ? 'z-50' : 'z-20'} ${className}`}>
-      {/* Search Input Pill Form with Premium Liquid Glassmorphism */}
+      {/* Clean Modern Pill Search Bar */}
       <form 
         onSubmit={handleSubmit}
         role="search"
         aria-label="Search for a service"
-        className="search-liquid-glass"
+        className="search-clean-bar"
       >
         <label htmlFor="service-search-input" className="sr-only">
           Search for a service
         </label>
 
         {/* Left Search Icon */}
-        <div className="search-liquid-icon" aria-hidden="true">
+        <div className="search-clean-icon" aria-hidden="true">
           <Search className="h-5 w-5 stroke-[2.2]" />
         </div>
 
@@ -188,7 +188,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           }}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="search-liquid-input"
+          className="search-clean-input"
           autoComplete="off"
         />
 
@@ -201,21 +201,21 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               inputRef.current?.focus();
             }}
             aria-label="Clear search query"
-            className="search-liquid-clear"
+            className="search-clean-clear"
           >
             <X className="w-4 h-4" />
           </button>
         )}
 
         {/* Thin Vertical Translucent Divider */}
-        <div className="search-liquid-divider hidden sm:block" aria-hidden="true" />
+        <div className="search-clean-divider hidden sm:block" aria-hidden="true" />
 
-        {/* Circular Liquid Glass Submit / Go Button */}
+        {/* Circular Submit / Go Button */}
         <button
           type="submit"
           aria-label="Submit search"
           title="Search capabilities & services"
-          className="search-liquid-submit group"
+          className="search-clean-submit group"
         >
           <ArrowRight className="h-5 w-5 stroke-[2.2] transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
         </button>

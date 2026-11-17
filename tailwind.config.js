@@ -8,6 +8,21 @@ export default {
   theme: {
     extend: {
       colors: {
+        background: 'var(--background, #09090b)',
+        foreground: 'var(--foreground, #f4f4f5)',
+        muted: {
+          DEFAULT: 'var(--muted, #27272a)',
+          foreground: 'var(--muted-foreground, #a1a1aa)',
+        },
+        border: 'var(--border, rgba(255, 255, 255, 0.12))',
+        primary: {
+          DEFAULT: 'var(--primary, #2ff59b)',
+          foreground: 'var(--primary-foreground, #08120d)',
+        },
+        destructive: 'var(--destructive, #ef4444)',
+        ring: 'var(--ring, #2ff59b)',
+        'chart-2': 'var(--chart-2, #2ff59b)',
+        'chart-4': 'var(--chart-4, #f59e0b)',
         axia: {
           navy: '#0b192c',
           navyDark: '#071325',
@@ -26,6 +41,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'bjork-alpha': ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        'bjork-display': ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       letterSpacing: {
         widestLg: '0.25em',
@@ -37,5 +54,7 @@ export default {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/container-queries'),
+  ],
 }

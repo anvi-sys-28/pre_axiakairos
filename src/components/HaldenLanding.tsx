@@ -5,8 +5,11 @@ import { SearchBar } from './SearchBar';
 import { Footer } from './Footer';
 import { Header } from './Header';
 import { AboutGenAISection } from './AboutGenAISection';
-import { IndustriesWeServeSection } from './IndustriesWeServeSection';
+import { HorizontalBentoSection } from './HorizontalBentoSection';
+import { IndustriesWeServeSection } from './industries/IndustriesWeServeSection';
+import { FAQ } from './ui/faq-2';
 import { siteContent } from '../content/site';
+import { cn } from '@/lib/utils';
 import '@/styles/halden.css';
 
 function parseHex(hex: string): [number, number, number] {
@@ -176,6 +179,10 @@ function paint(
 export const HaldenLanding: React.FC = () => {
   const location = useLocation();
   const [isAboutLayered, setIsAboutLayered] = useState(false);
+  const [trackTranslateX, setTrackTranslateX] = useState(0);
+  const targetTranslateRef = useRef(0);
+  const atZeroTimeRef = useRef(performance.now());
+  const lastTranslateChangeTimeRef = useRef(performance.now());
 
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -187,6 +194,9 @@ export const HaldenLanding: React.FC = () => {
 
   const heroFadeRef = useRef<HTMLDivElement>(null);
   const atmoDarkRef = useRef<HTMLDivElement>(null);
+  const horizontalStageRef = useRef<HTMLDivElement>(null);
+  const horizontalTrackRef = useRef<HTMLDivElement>(null);
+  const panel3Ref = useRef<HTMLDivElement>(null);
 
   const [isDark, setIsDark] = useState<boolean>(() => {
     if (typeof document !== 'undefined') {
@@ -291,13 +301,20 @@ export const HaldenLanding: React.FC = () => {
     let stmtAnimDone = false;
     let stmtStartTime: number | null = null;
 
+    function preventScroll(e: Event) {
+      e.preventDefault();
+    }
+
     function triggerStatementReveal() {
       if (stmtAnimActive || stmtAnimDone) return;
       stmtAnimActive = true;
       stmtStartTime = performance.now();
 
-      // Lock scrolling so user experiences the full 5-second reveal sequence
+      // Screen is not scrollable until text animation in layer 1 completes
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
 
       const targetEl = document.getElementById('scene2Wrap') || document.getElementById('statement') || document.getElementById('split');
       if (targetEl) {
@@ -308,7 +325,13 @@ export const HaldenLanding: React.FC = () => {
     function finishStatement() {
       stmtAnimActive = false;
       stmtAnimDone = true;
+
+      // Unlock scrolling completely
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+
       setIsAboutLayered(true);
       const secEl = document.getElementById('statement');
       if (secEl) {
@@ -321,6 +344,118 @@ export const HaldenLanding: React.FC = () => {
     }
 
     (window as any).__finishStatement = finishStatement;
+
+    // Automatic smooth snapping between Section 1 (Hero) and Section 2 (About / Scene 2)
+    let isAutoSnapping = false;
+    let autoSnapTimer: any = null;
+    let scrollEndTimer: any = null;
+
+    function snapTo(targetY: number) {
+      if (isAutoSnapping) return;
+      isAutoSnapping = true;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+      clearTimeout(autoSnapTimer);
+      autoSnapTimer = setTimeout(() => {
+        isAutoSnapping = false;
+      }, 750);
+    }
+
+    function onWheelSnap(e: WheelEvent) {
+      if (stmtAnimActive) return; // Layer 1 text preloader animation active
+      if (isAutoSnapping) return;
+
+      const stage = document.getElementById('horizontalStage') || document.getElementById('scene2Wrap') || document.getElementById('split');
+      if (!stage) return;
+
+      const stageTop = stage.offsetTop;
+      const curY = window.scrollY;
+      const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+
+      // 1. In Section 1 (Hero) and scrolling DOWN -> Snap directly to Section 2 (stageTop)
+      if (curY < stageTop - 40 && delta > 15) {
+        e.preventDefault();
+        snapTo(stageTop);
+        targetTranslateRef.current = 0;
+        setTrackTranslateX(0);
+        atZeroTimeRef.current = performance.now();
+        return;
+      }
+
+      // 2. Below horizontal stage (e.g. in Section 4 Industries or FAQ) and scrolling UP:
+      // Catch upward scroll approaching stageTop and enter Section 3 at maxTranslate!
+      if (curY > stageTop && curY <= stageTop + 240 && delta < -10) {
+        const track = horizontalTrackRef.current || (document.querySelector('.halden-horizontal-track') as HTMLElement | null);
+        const maxTranslate = track ? Math.max(0, track.scrollWidth - window.innerWidth) : window.innerWidth;
+        e.preventDefault();
+        window.scrollTo(0, stageTop);
+        targetTranslateRef.current = maxTranslate;
+        setTrackTranslateX(maxTranslate);
+        lastTranslateChangeTimeRef.current = performance.now();
+        return;
+      }
+
+      // 3. Over Section 2 & Section 3 horizontal stage:
+      const isAtStage = Math.abs(curY - stageTop) <= 60;
+
+      if (isAtStage && stmtAnimDone) {
+        const track = horizontalTrackRef.current || (document.querySelector('.halden-horizontal-track') as HTMLElement | null);
+        const maxTranslate = track ? Math.max(0, track.scrollWidth - window.innerWidth) : window.innerWidth;
+
+        // Scrolling DOWN / RIGHT towards Section 3
+        if (delta > 0) {
+          if (targetTranslateRef.current < maxTranslate) {
+            e.preventDefault();
+            const step = Math.min(100, Math.max(40, Math.abs(delta) * 0.9));
+            const nextX = Math.min(maxTranslate, targetTranslateRef.current + step);
+            targetTranslateRef.current = nextX;
+            setTrackTranslateX(nextX);
+            lastTranslateChangeTimeRef.current = performance.now();
+            return;
+          }
+          // If at the end of Section 3, require a brief pause before continuing down into Section 4
+          if (performance.now() - lastTranslateChangeTimeRef.current < 250) {
+            e.preventDefault();
+            return;
+          }
+          // Otherwise let default vertical scroll continue down into Section 4!
+        }
+
+        // Scrolling UP / LEFT back towards Section 2
+        if (delta < 0) {
+          if (targetTranslateRef.current > 0) {
+            e.preventDefault();
+            // Lock vertical scroll position strictly at stageTop while reversing horizontally
+            if (Math.abs(curY - stageTop) > 2) {
+              window.scrollTo(0, stageTop);
+            }
+            const step = Math.min(100, Math.max(40, Math.abs(delta) * 0.9));
+            const nextX = Math.max(0, targetTranslateRef.current - step);
+            targetTranslateRef.current = nextX;
+            setTrackTranslateX(nextX);
+            lastTranslateChangeTimeRef.current = performance.now();
+            if (nextX === 0) {
+              atZeroTimeRef.current = performance.now();
+            }
+            return;
+          }
+
+          // If already settled back at Section 2 (targetTranslateRef === 0):
+          // ONLY snap to Hero if user paused at Section 2 for at least 250ms and performs an explicit upward scroll
+          if (targetTranslateRef.current <= 0) {
+            const timeAtZero = performance.now() - atZeroTimeRef.current;
+            if (timeAtZero > 250 && delta < -15) {
+              e.preventDefault();
+              snapTo(0);
+              return;
+            } else {
+              // Block accidental leap to Hero during backward horizontal motion
+              e.preventDefault();
+              return;
+            }
+          }
+        }
+      }
+    }
 
     let curTip = 0.30;
     let curHalf = 0.34;
@@ -454,16 +589,34 @@ export const HaldenLanding: React.FC = () => {
         navEl.classList.remove('scrolled');
       }
 
-      // Section 2 (#141414 dark background) detector to keep Date/Time white and visible
-      const scene2 = document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
-      const inSec2 = scene2 ? (scene2.getBoundingClientRect().top <= 140) : (window.scrollY >= 120);
+      // Section 2 & 3 (#141414), Industries (#141414) and FAQ (#0a0b0d) detector to keep Date/Time white and visible
+      const stage = document.getElementById('horizontalStage') || document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+      const indEl = document.getElementById('industriesSection');
+      const faqEl = document.getElementById('faqSection');
+      const inDarkStage = stage ? (stage.getBoundingClientRect().top <= 140 && stage.getBoundingClientRect().bottom >= 140) : false;
+      const inInd = indEl ? (indEl.getBoundingClientRect().top <= 140 && indEl.getBoundingClientRect().bottom >= 140) : false;
+      const inFaq = faqEl ? (faqEl.getBoundingClientRect().top <= 140 && faqEl.getBoundingClientRect().bottom >= 140) : false;
+      const isOverDark = (inDarkStage || inInd || inFaq) && isDarkRef.current;
 
-      if (inSec2 || (window.scrollY >= 120)) {
+      if (isOverDark) {
         navEl.classList.add('in-section-2');
         navEl.classList.add('nav-over-dark');
       } else {
         navEl.classList.remove('in-section-2');
         navEl.classList.remove('nav-over-dark');
+      }
+
+      // Sync track state if user scrolls back above stage
+      const stageEl = document.getElementById('horizontalStage');
+      if (stageEl) {
+        const stageTop = stageEl.offsetTop;
+        if (window.scrollY < stageTop - 100) {
+          if (targetTranslateRef.current !== 0) {
+            targetTranslateRef.current = 0;
+            setTrackTranslateX(0);
+            setActiveHorizontalIndex(0);
+          }
+        }
       }
 
       // Entire Section 1 uniform fade out ONLY when scrolling and entering Section 2 second time
@@ -478,8 +631,31 @@ export const HaldenLanding: React.FC = () => {
       }
 
       // Trigger 5-second reveal when user reaches Section 2
-      if (window.scrollY >= ih * 0.72 && !stmtAnimDone && !stmtAnimActive) {
+      const scene2Wrap = document.getElementById('scene2Wrap') || document.getElementById('statement');
+      const isNearScene2 = scene2Wrap ? scene2Wrap.getBoundingClientRect().top <= ih * 0.75 : false;
+      const isPreloaderDone = typeof window === 'undefined' || (window as any).__PRELOADER_DONE__ !== false;
+      if (isNearScene2 && !stmtAnimDone && !stmtAnimActive && isPreloaderDone) {
         triggerStatementReveal();
+      }
+
+      // Snap intent detector for non-wheel scrolling (touch, scrollbar drag, keyboard navigation)
+      if (stmtAnimDone && !isAutoSnapping) {
+        const stage = document.getElementById('horizontalStage') || document.getElementById('scene2Wrap') || document.getElementById('split');
+        if (stage) {
+          const stageTop = stage.offsetTop;
+          clearTimeout(scrollEndTimer);
+          scrollEndTimer = setTimeout(() => {
+            if (isAutoSnapping) return;
+            const finalY = window.scrollY;
+            if (finalY > 60 && finalY < stageTop - 50) {
+              if (finalY > stageTop * 0.35) {
+                snapTo(stageTop);
+              } else {
+                snapTo(0);
+              }
+            }
+          }, 180);
+        }
       }
     }
 
@@ -569,12 +745,67 @@ export const HaldenLanding: React.FC = () => {
       animId = requestAnimationFrame(loop);
     }
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    function onTouchStart(e: TouchEvent) {
+      if (e.touches.length > 0) {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+      }
+    }
+
+    function onTouchMove(e: TouchEvent) {
+      if (stmtAnimActive || !stmtAnimDone) return;
+      if (e.touches.length === 0) return;
+
+      const stage = document.getElementById('horizontalStage');
+      if (!stage) return;
+      const stageTop = stage.offsetTop;
+      const isAtStage = Math.abs(window.scrollY - stageTop) <= 40;
+      if (!isAtStage) return;
+
+      const curX = e.touches[0].clientX;
+      const curY = e.touches[0].clientY;
+      const diffX = touchStartX - curX;
+      const diffY = touchStartY - curY;
+
+      const delta = Math.abs(diffX) > Math.abs(diffY) ? diffX : diffY;
+
+      const track = horizontalTrackRef.current || (document.querySelector('.halden-horizontal-track') as HTMLElement | null);
+      const maxTranslate = track ? Math.max(0, track.scrollWidth - window.innerWidth) : window.innerWidth;
+
+      if (delta > 0 && targetTranslateRef.current < maxTranslate) {
+        e.preventDefault();
+        touchStartX = curX;
+        touchStartY = curY;
+        const nextX = Math.min(maxTranslate, targetTranslateRef.current + delta * 1.2);
+        targetTranslateRef.current = nextX;
+        setTrackTranslateX(nextX);
+        lastTranslateChangeTimeRef.current = performance.now();
+      } else if (delta < 0 && targetTranslateRef.current > 0) {
+        e.preventDefault();
+        touchStartX = curX;
+        touchStartY = curY;
+        const nextX = Math.max(0, targetTranslateRef.current + delta * 1.2);
+        targetTranslateRef.current = nextX;
+        setTrackTranslateX(nextX);
+        lastTranslateChangeTimeRef.current = performance.now();
+        if (nextX === 0) {
+          atZeroTimeRef.current = performance.now();
+        }
+      }
+    }
+
     if (container) {
       container.classList.add('ready');
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
+    window.addEventListener('wheel', onWheelSnap, { passive: false });
+    window.addEventListener('touchstart', onTouchStart, { passive: true });
+    window.addEventListener('touchmove', onTouchMove, { passive: false });
 
     animId = requestAnimationFrame(loop);
 
@@ -582,7 +813,15 @@ export const HaldenLanding: React.FC = () => {
       cancelAnimationFrame(animId);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
+      window.removeEventListener('wheel', onWheelSnap);
+      window.removeEventListener('touchstart', onTouchStart);
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      clearTimeout(autoSnapTimer);
+      clearTimeout(scrollEndTimer);
       document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
       delete (window as any).__finishStatement;
     };
   }, []);
@@ -894,37 +1133,83 @@ export const HaldenLanding: React.FC = () => {
           </div>
         </section>
 
-        {/* Scene 2 & 3: About Axia Kairos & Generative AI Section with Preloader Layer Overlay */}
-        <div className="halden-scene-2-wrap" id="scene2Wrap">
-          {/* Scene 3: About Axia Kairos - Enterprise Generative AI & Thinking Orbs (Base layer #141414) */}
-          <AboutGenAISection id="split" isLayered={isAboutLayered} />
-
-          {/* Scene 2: Preloader-like Statement Layer (Overlay that transforms white -> #141414) */}
-          <section className="halden-statement" id="statement">
-            <div className="pin">
-              <p ref={stmtRef} id="stmt">
-                Axia Kairos is an enterprise AI teammate
-                <br /> that automates workflows, orchestrates SAP systems,
-                <br /> synthesizes sovereign intelligence, and solves
-                <br /> complex operations to keep global business moving
-              </p>
-              <button
-                type="button"
-                className="halden-stmt-skip-btn"
-                onClick={() => {
-                  const finish = (window as any).__finishStatement;
-                  if (finish) finish();
+        {/* Horizontal Experience Stage: Section 2 (About Us / Orby / React Flow) -> Section 3 (Platform Bento) */}
+        <div
+          ref={horizontalStageRef}
+          id="horizontalStage"
+          className="halden-horizontal-stage"
+        >
+          <div className="halden-horizontal-sticky-viewport">
+            <div
+              ref={horizontalTrackRef}
+              className="halden-horizontal-track"
+              style={{
+                transform: `translate3d(-${trackTranslateX}px, 0, 0)`,
+                transition: 'transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
+              }}
+            >
+              {/* Panel 1: Section 2 - About Axia Kairos & Generative AI Section */}
+              <div
+                className="halden-horizontal-panel halden-panel-section2 halden-scene-2-wrap"
+                id="scene2Wrap"
+                style={{
+                  opacity: Math.max(0.35, 1 - (trackTranslateX / Math.max(1, (typeof window !== 'undefined' ? window.innerWidth : 1200) * 0.75)) * 0.65),
+                  transform: `scale(${Math.max(0.96, 1 - (trackTranslateX / Math.max(1, (typeof window !== 'undefined' ? window.innerWidth : 1200) * 0.75)) * 0.04)})`,
+                  transformOrigin: 'right center',
+                  transition: 'opacity 0.38s cubic-bezier(0.16, 1, 0.3, 1), transform 0.38s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
-                title="Skip animation to About Axia Kairos"
               >
-                Skip to About →
-              </button>
+                <AboutGenAISection id="split" isLayered={isAboutLayered} isDark={isDark} />
+
+                {/* Scene 2: Preloader-like Statement Layer */}
+                <section className="halden-statement" id="statement">
+                  <div className="pin">
+                    <p ref={stmtRef} id="stmt">
+                      Axia Kairos is an enterprise AI teammate
+                      <br /> that automates workflows, orchestrates SAP systems,
+                      <br /> synthesizes sovereign intelligence, and solves
+                      <br /> complex operations to keep global business moving
+                    </p>
+                    <button
+                      type="button"
+                      className="halden-stmt-skip-btn"
+                      onClick={() => {
+                        const finish = (window as any).__finishStatement;
+                        if (finish) finish();
+                      }}
+                      title="Skip animation to About Axia Kairos"
+                    >
+                      Skip to About →
+                    </button>
+                  </div>
+                </section>
+              </div>
+
+              {/* Panel 2: Section 3 - Bento Feature Showcase */}
+              <div
+                ref={panel3Ref}
+                className="halden-horizontal-panel halden-panel-section3"
+                id="bentoSection"
+              >
+                <HorizontalBentoSection isDark={isDark} tone={isDark ? "dark" : "light"} />
+              </div>
             </div>
-          </section>
+          </div>
         </div>
 
-        {/* Scene 4: Industries We Serve ("Elo One" Case Study Results) */}
-        <IndustriesWeServeSection />
+        {/* Section 4: Industries We Serve */}
+        <IndustriesWeServeSection isDark={isDark} />
+
+        {/* Section 5: Enterprise FAQ Section */}
+        <section
+          id="faqSection"
+          className={cn(
+            "w-full py-16 sm:py-24 px-4 sm:px-6 lg:px-8 text-foreground relative z-20 transition-colors duration-500",
+            isDark ? "bg-[#0a0b0d] border-t border-white/5" : "bg-[#faf8f5] border-t border-[#e2e8f0]"
+          )}
+        >
+          <FAQ isDark={isDark} />
+        </section>
       </main>
 
       {/* Shared Ticket Stub Footer */}

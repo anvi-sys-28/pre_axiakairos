@@ -49,13 +49,13 @@ const DeferredAssistantLauncher = () => {
     if ('requestIdleCallback' in window) {
       const handle = (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => number }).requestIdleCallback(
         () => setShouldLoad(true),
-        { timeout: 3500 }
+        { timeout: 800 }
       );
       return () => {
         (window as Window & { cancelIdleCallback: (id: number) => void }).cancelIdleCallback(handle);
       };
     } else {
-      const timer = setTimeout(() => setShouldLoad(true), 2500);
+      const timer = setTimeout(() => setShouldLoad(true), 600);
       return () => clearTimeout(timer);
     }
   }, []);

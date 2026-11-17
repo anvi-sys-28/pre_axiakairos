@@ -18,13 +18,11 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(({ onCtaClick }, ref)
 
   const [isOverDark, setIsOverDark] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      return (
-        window.location.pathname === '/' ||
-        document.documentElement.classList.contains('dark') ||
-        window.scrollY >= 100
-      );
+      const isDarkTheme = document.documentElement.classList.contains('dark');
+      const sy = window.scrollY;
+      return isDarkTheme || sy >= 140;
     }
-    return true;
+    return false;
   });
 
   // Live dynamic Date & Time for Header (e.g. "Saturday", "18:51 · 7 NOVEMBER 2026")
@@ -105,14 +103,14 @@ export const Header = forwardRef<HTMLElement, HeaderProps>(({ onCtaClick }, ref)
         window.requestAnimationFrame(() => {
           const sy = window.scrollY;
           setIsScrolled(sy > 20);
-          const scene2 = document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
-          const ih = Math.max(window.innerHeight, 1);
-          // Once scrolled past hero crest (sy >= 120) or scene 2 is entering top, navbar is always over dark background
-          const inSec2 = scene2
-            ? scene2.getBoundingClientRect().top <= 140
-            : sy >= ih * 0.22;
+          const stage = document.getElementById('horizontalStage') || document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+          const indEl = document.getElementById('industriesSection');
+          const faqEl = document.getElementById('faqSection');
+          const inStage = stage ? (stage.getBoundingClientRect().top <= 140 && stage.getBoundingClientRect().bottom >= 140) : false;
+          const inInd = indEl ? (indEl.getBoundingClientRect().top <= 140 && indEl.getBoundingClientRect().bottom >= 140) : false;
+          const inFaq = faqEl ? (faqEl.getBoundingClientRect().top <= 140 && faqEl.getBoundingClientRect().bottom >= 140) : false;
           const isDarkTheme = document.documentElement.classList.contains('dark');
-          setIsOverDark(isHomePage || inSec2 || isDarkTheme || sy >= 100);
+          setIsOverDark(isDarkTheme);
           ticking = false;
         });
         ticking = true;

@@ -13,6 +13,21 @@
 @tailwind utilities;
 
 :root {
+  /* shadcn UI semantic tokens */
+  --background: #ffffff;
+  --foreground: #09090b;
+  --color-background: #ffffff;
+  --color-foreground: #09090b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: #e4e4e7;
+  --primary: #09090b;
+  --primary-foreground: #fafafa;
+  --destructive: #ef4444;
+  --ring: #18181b;
+  --chart-2: #10b981;
+  --chart-4: #f59e0b;
+
   --color-navy: #0b192c;
   --color-navy-dark: #071325;
   --color-navy-text: #0a1626;
@@ -48,9 +63,60 @@
   --pattern-fill: var(--diamond-warm-fill);
   --pattern-border: rgba(185, 133, 74, 0.20);
   --pattern-glow: rgba(227, 176, 91, 0.08);
+
+  /* Bjork / Marketing Bento Tokens (Axia Kairos Obsidian Black & Emerald Green) */
+  --bjork-bg: #141414;
+  --bjork-surface: #18191d;
+  --bjork-surface-muted: rgba(24, 25, 29, 0.94);
+  --bjork-surface-hover: #22252c;
+  --bjork-surface-active: #2a2d36;
+  --bjork-panel: #111215;
+  --bjork-menu: rgba(20, 22, 27, 0.98);
+  --bjork-text: #f4f4f5;
+  --bjork-text-strong: #ffffff;
+  --bjork-text-medium: rgba(244, 244, 245, 0.78);
+  --bjork-text-muted: rgba(244, 244, 245, 0.60);
+  --bjork-text-soft: rgba(244, 244, 245, 0.42);
+  --bjork-text-faint: rgba(244, 244, 245, 0.16);
+  --bjork-inverted-text: #060809;
+  --bjork-border: rgba(255, 255, 255, 0.08);
+  --bjork-border-muted: rgba(255, 255, 255, 0.05);
+  --bjork-border-strong: rgba(255, 255, 255, 0.16);
+  --bjork-thumb: #3f444e;
+  --bjork-track: #0e0f12;
+  --bjork-accent: #10b981;
+  --bjork-accent-hover: #059669;
+  --bjork-accent-soft: rgba(16, 185, 129, 0.12);
+  --bjork-accent-muted: rgba(16, 185, 129, 0.24);
+  --bjork-accent-badge: rgba(16, 185, 129, 0.18);
+  --bjork-accent-badge-foreground: #34d399;
+  --bjork-accent-foreground: #021a12;
+  --bjork-accent-fill: #10b981;
+  --bjork-accent-fill-hover: #059669;
+  --bjork-shadow-surface: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 20px -6px rgba(0, 0, 0, 0.55);
+  --bjork-shadow-soft: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --bjork-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 36px -28px rgba(0, 0, 0, 0.85);
+  --bjork-shadow-menu: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 22px 42px -22px rgba(0, 0, 0, 0.9);
+  --bjork-shadow-inset: inset 0 1px 10px rgba(0, 0, 0, 0.5);
+  --bjork-ring-offset: #141414;
 }
 
 .dark {
+  /* shadcn UI semantic tokens */
+  --background: #09090b;
+  --foreground: #f4f4f5;
+  --color-background: #09090b;
+  --color-foreground: #f4f4f5;
+  --muted: #1c1c1f;
+  --muted-foreground: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.12);
+  --primary: #2ff59b;
+  --primary-foreground: #08120d;
+  --destructive: #ef4444;
+  --ring: #2ff59b;
+  --chart-2: #2ff59b;
+  --chart-4: #f59e0b;
+
   /* Diamond Zone - Hero-aligned Palette (Dark Theme - Balanced Visibility ~20%) */
   --zone-bg:
     radial-gradient(60% 50% at 85% 20%, rgba(227, 176, 91, 0.08), transparent 70%),
@@ -68,6 +134,42 @@
   --pattern-fill: var(--diamond-warm-fill);
   --pattern-border: rgba(227, 176, 91, 0.18);
   --pattern-glow: rgba(227, 176, 91, 0.06);
+
+  /* Bjork / Marketing Bento Tokens */
+  --bjork-bg: #141414;
+  --bjork-surface: #18191d;
+  --bjork-surface-muted: rgba(24, 25, 29, 0.92);
+  --bjork-surface-hover: #22252c;
+  --bjork-surface-active: #2a2d36;
+  --bjork-panel: #111215;
+  --bjork-menu: rgba(20, 22, 27, 0.98);
+  --bjork-text: #ededed;
+  --bjork-text-strong: rgba(237, 237, 237, 0.9);
+  --bjork-text-medium: rgba(237, 237, 237, 0.72);
+  --bjork-text-muted: rgba(237, 237, 237, 0.6);
+  --bjork-text-soft: rgba(237, 237, 237, 0.5);
+  --bjork-text-faint: rgba(237, 237, 237, 0.22);
+  --bjork-inverted-text: #080808;
+  --bjork-border: #232323;
+  --bjork-border-muted: #1c1c1c;
+  --bjork-border-strong: #343434;
+  --bjork-thumb: #626262;
+  --bjork-track: #090909;
+  --bjork-accent: #10b981;
+  --bjork-accent-hover: #059669;
+  --bjork-accent-soft: rgba(16, 185, 129, 0.12);
+  --bjork-accent-muted: rgba(16, 185, 129, 0.24);
+  --bjork-accent-badge: rgba(16, 185, 129, 0.18);
+  --bjork-accent-badge-foreground: #34d399;
+  --bjork-accent-foreground: #021a12;
+  --bjork-accent-fill: #10b981;
+  --bjork-accent-fill-hover: #059669;
+  --bjork-shadow-surface: inset 0 7px 14px rgba(255, 255, 255, 0.03), inset 0 0.5px 0.5px rgba(255, 255, 255, 0.06), 0 14px 20px -6px rgba(0, 0, 0, 0.45);
+  --bjork-shadow-soft: inset 0 1px 0 rgba(255, 255, 255, 0.045);
+  --bjork-shadow-panel: inset 0 1px 0 rgba(255, 255, 255, 0.035), 0 18px 36px -28px rgba(0, 0, 0, 0.9);
+  --bjork-shadow-menu: inset 0 1px 0 rgba(255, 255, 255, 0.055), inset 0 12px 24px rgba(255, 255, 255, 0.018), inset 0 -18px 26px rgba(0, 0, 0, 0.24), 0 22px 42px -22px rgba(0, 0, 0, 0.9);
+  --bjork-shadow-inset: inset 0 1px 10px rgba(0, 0, 0, 0.45);
+  --bjork-ring-offset: #080808;
 }
 
 @layer base {
@@ -110,6 +212,14 @@
 }
 
 @layer utilities {
+  .font-bjork-alpha {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  .font-bjork-display {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: -0.035em;
+  }
+
   .tracking-eyebrow {
     letter-spacing: 0.25em;
   }
@@ -435,4 +545,32 @@
   .diamond-about-2 {
     animation: none !important;
   }
+}
+
+/* ==========================================================================
+   Categories Section / Primary Button Styles
+   ========================================================================== */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+.btn-primary:hover::before {
+  transform: translateX(100%);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
