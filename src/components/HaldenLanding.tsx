@@ -6,6 +6,7 @@ import { Footer } from './Footer';
 import { Header } from './Header';
 import { AboutGenAISection } from './AboutGenAISection';
 import { HorizontalBentoSection } from './HorizontalBentoSection';
+import { PowerfulDeploySection } from './PowerfulDeploySection';
 import { IndustriesWeServeSection } from './industries/IndustriesWeServeSection';
 import { FAQ } from './ui/faq-2';
 import { siteContent } from '../content/site';
@@ -548,17 +549,17 @@ export const HaldenLanding: React.FC = () => {
               } else {
                 const m = smoothstep01((deltaY + 0.16) / 0.16);
                 r = Math.round(4 + (12 - 4) * m);
-                gCol = Math.round(18 + (38 - 18) * m);
-                b = Math.round(20 + (44 - 20) * m);
+                gCol = Math.round(18 + (42 - 18) * m);
+                b = Math.round(20 + (46 - 20) * m);
               }
             } else {
               const d = Math.min(1, deltaY / 0.40);
               const m = smoothstep01(d);
               const rightWeight = smoothstep01((xn - 0.20) / 0.50);
 
-              const targetR = Math.round(10 - 6 * rightWeight);
-              const targetG = Math.round(52 - 28 * rightWeight);
-              const targetB = Math.round(56 - 30 * rightWeight);
+              const targetR = Math.round(14 - 10 * rightWeight);
+              const targetG = Math.round(76 - 54 * rightWeight);
+              const targetB = Math.round(82 - 58 * rightWeight);
 
               const rimR = 45;
               const rimG = 212;
@@ -589,14 +590,16 @@ export const HaldenLanding: React.FC = () => {
         navEl.classList.remove('scrolled');
       }
 
-      // Section 2 & 3 (#141414), Industries (#141414) and FAQ (#0a0b0d) detector to keep Date/Time white and visible
+      // Section 2 & 3 (#141414), Scale Section, Industries (#141414) and FAQ (#0a0b0d) detector to keep Date/Time white and visible
       const stage = document.getElementById('horizontalStage') || document.getElementById('scene2Wrap') || document.getElementById('split') || document.getElementById('statement');
+      const scaleEl = document.getElementById('powerfulScaleSection');
       const indEl = document.getElementById('industriesSection');
       const faqEl = document.getElementById('faqSection');
       const inDarkStage = stage ? (stage.getBoundingClientRect().top <= 140 && stage.getBoundingClientRect().bottom >= 140) : false;
+      const inScale = scaleEl ? (scaleEl.getBoundingClientRect().top <= 140 && scaleEl.getBoundingClientRect().bottom >= 140) : false;
       const inInd = indEl ? (indEl.getBoundingClientRect().top <= 140 && indEl.getBoundingClientRect().bottom >= 140) : false;
       const inFaq = faqEl ? (faqEl.getBoundingClientRect().top <= 140 && faqEl.getBoundingClientRect().bottom >= 140) : false;
-      const isOverDark = (inDarkStage || inInd || inFaq) && isDarkRef.current;
+      const isOverDark = (inDarkStage || inScale || inInd || inFaq) && isDarkRef.current;
 
       if (isOverDark) {
         navEl.classList.add('in-section-2');
@@ -1191,11 +1194,21 @@ export const HaldenLanding: React.FC = () => {
                 className="halden-horizontal-panel halden-panel-section3"
                 id="bentoSection"
               >
-                <HorizontalBentoSection isDark={isDark} tone={isDark ? "dark" : "light"} />
+                <HorizontalBentoSection
+                  isDark={isDark}
+                  tone={isDark ? "dark" : "light"}
+                  eyebrow="Enterprise Telemetry"
+                  title="Autonomous Intelligence for Mission-Critical Operations."
+                  description="Every agent execution, SAP BTP transaction, and telemetry event captured on a unified live stream. Detect latency spikes, simulate rollbacks, and optimize cloud expenditure before deployment."
+                  cta={{ label: "Explore Platform Capabilities", href: "/services" }}
+                />
               </div>
             </div>
           </div>
         </div>
+
+        {/* Section: Powerful to deploy, ready to scale (Placed after Section 3 and before Industries We Serve) */}
+        <PowerfulDeploySection isDark={isDark} />
 
         {/* Section 4: Industries We Serve */}
         <IndustriesWeServeSection isDark={isDark} />
