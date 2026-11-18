@@ -18,7 +18,6 @@ import {
   Code2,
   Lightbulb,
   Mic,
-  ChevronDown,
   ChevronRight,
   Link2,
   Blocks,
@@ -31,7 +30,7 @@ import { MessageBubble } from './MessageBubble';
 import { HandoffForm } from './HandoffForm';
 import { useChat } from './useChat';
 import { LiveOrb, WEBGL_COLORS, type LiveOrbVariant } from '@/components/ui/live-orb';
-import { IconFolder, DEFAULT_ICONS, type FolderIcon } from '@/components/ui/icon-folder';
+import { IconFolder, DEFAULT_ICONS, DEPARTMENT_ICONS, type FolderIcon } from '@/components/ui/icon-folder';
 
 export interface ChatPanelRef {
   sendMessage: (text: string) => void;
@@ -45,25 +44,64 @@ export interface ChatPanelProps {
   orbVariant?: LiveOrbVariant;
 }
 
-const AVAILABLE_MODELS = [
-  { id: 'opus-4-5', name: 'Opus 4.5 Medium', provider: 'Anthropic Claude' },
-  { id: 'sonnet-3-7', name: 'Claude 3.7 Sonnet', provider: 'Anthropic Claude' },
-  { id: 'kairos-3-0', name: 'Axia Kairos 3.0 Pro', provider: 'Sovereign Swarm' },
-  { id: 'gpt-4o', name: 'GPT-4o Enterprise', provider: 'OpenAI Omni' },
-];
-
 const FOLDERS_CONFIG = [
   {
-    id: 'design',
-    title: 'Design',
-    tags: ['Figma', 'Higgsfield', 'Hotjar', 'After Effects'],
-    icons: DEFAULT_ICONS.slice(0, 4),
-    label: 'Creative & UI/UX',
+    id: 'departments',
+    title: 'Departments',
+    tags: ['Marketing & Sales', 'Finance', 'HR', 'Administrator'],
+    icons: DEPARTMENT_ICONS,
+    label: 'Enterprise Units',
   },
   {
-    id: 'automation',
-    title: 'Automation',
-    tags: ['SAP S/4', 'n8n', 'Python', 'OpenAI'],
+    id: 'marketing',
+    title: 'Marketing & Sales',
+    tags: ['Salesforce', 'HubSpot', 'Campaign AI', 'Lead Gen'],
+    icons: [
+      {
+        label: 'Salesforce',
+        background: 'linear-gradient(135deg,#00a1e0,#0070d2)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
+            <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z" />
+          </svg>
+        ),
+      },
+      {
+        label: 'HubSpot',
+        background: 'linear-gradient(135deg,#ff7a59,#d9532f)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" fill="#fff" />
+            <path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" />
+          </svg>
+        ),
+      },
+      {
+        label: 'Campaign AI',
+        background: 'linear-gradient(135deg,#f97316,#ea580c)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+        ),
+      },
+      {
+        label: 'Lead Gen',
+        background: 'linear-gradient(135deg,#0284c7,#0369a1)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 6v6l4 2" />
+          </svg>
+        ),
+      },
+    ],
+    label: 'Growth & Pipeline',
+  },
+  {
+    id: 'finance',
+    title: 'Finance',
+    tags: ['SAP S/4', 'NetSuite', 'SOX Audit', 'Invoicing AI'],
     icons: [
       {
         label: 'SAP S/4',
@@ -73,58 +111,122 @@ const FOLDERS_CONFIG = [
         ),
       },
       {
-        label: 'n8n',
-        background: 'linear-gradient(135deg,#ea4b71,#b81440)',
+        label: 'NetSuite',
+        background: 'linear-gradient(135deg,#0073e6,#004b99)',
         node: (
-          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
-            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 14.5h-2v-5h2zm0-7h-2V7h2z" />
-          </svg>
+          <span className="font-sans font-black text-white text-[12px] tracking-tight">NET</span>
         ),
       },
       {
-        label: 'Python',
-        background: 'linear-gradient(135deg,#3776ab,#ffd43b)',
+        label: 'Stripe',
+        background: 'linear-gradient(135deg,#635bff,#4338ca)',
         node: (
-          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
-            <path d="M11.9 2c-3.6 0-3.4 1.6-3.4 1.6l.04 1.64h3.46v.5H7.1s-2.3.26-2.3 3.38c0 3.13 2 3.06 2 3.06h1.2v-1.7s-.06-2 1.98-2h3.42s1.92.03 1.92-1.88V4.76S15.65 2 11.9 2zM10.2 3.5a.6.6 0 1 1 0 1.2.6.6 0 0 1 0-1.2zm1.9 18.5c3.6 0 3.4-1.6 3.4-1.6l-.04-1.64h-3.46v-.5h4.9s2.3-.26 2.3-3.38c0-3.13-2-3.06-2-3.06h-1.2v1.7s.06 2-1.98 2h-3.42s-1.92-.03-1.92 1.88v1.84s-.33 2.76 3.42 2.76zm1.7-1.5a.6.6 0 1 1 0-1.2.6.6 0 0 1 0 1.2z" />
-          </svg>
+          <span className="font-sans font-black text-white text-[13px] tracking-tight">S</span>
         ),
       },
       {
-        label: 'OpenAI',
-        background: 'linear-gradient(135deg,#10a37f,#0b6e55)',
+        label: 'SOX Audit',
+        background: 'linear-gradient(135deg,#10b981,#047857)',
         node: (
-          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="#fff" aria-hidden="true">
-            <path d="M22.28 9.87a5.98 5.98 0 0 0-.52-4.92 6.05 6.05 0 0 0-6.62-2.73 6.01 6.01 0 0 0-4.63-2.07 6.07 6.07 0 0 0-5.77 4.19 6.02 6.02 0 0 0-3.95 2.87 6.05 6.05 0 0 0 .74 7.15 6 6 0 0 0 .52 4.91 6.05 6.05 0 0 0 6.62 2.74 6.04 6.04 0 0 0 4.63 2.06 6.07 6.07 0 0 0 5.77-4.18 6.02 6.02 0 0 0 3.95-2.88 6.05 6.05 0 0 0-.74-7.14z" />
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <path d="M9 12l2 2 4-4" />
           </svg>
         ),
       },
     ],
-    label: 'Enterprise Logic',
+    label: 'ERP & Treasury',
   },
   {
-    id: 'analytics',
-    title: 'Analytics',
-    tags: ['Mixpanel', 'Maze', 'Databricks', 'BigQuery'],
+    id: 'hr',
+    title: 'HR',
+    tags: ['Workday', 'BambooHR', 'Talent Ops', 'Onboarding AI'],
     icons: [
-      DEFAULT_ICONS[5], // Mixpanel
-      DEFAULT_ICONS[4], // Maze
       {
-        label: 'Databricks',
-        background: 'linear-gradient(135deg,#ff3621,#c22413)',
+        label: 'Workday',
+        background: 'linear-gradient(135deg,#e26a2c,#b44b15)',
         node: (
-          <span className="font-mono font-black text-white text-[12px]">DBX</span>
+          <span className="font-sans font-black text-white text-[11px] tracking-tight">WD</span>
         ),
       },
       {
-        label: 'BigQuery',
-        background: 'linear-gradient(135deg,#4285f4,#1a73e8)',
+        label: 'BambooHR',
+        background: 'linear-gradient(135deg,#2eb82e,#1f801f)',
         node: (
-          <span className="font-mono font-black text-white text-[12px]">GBQ</span>
+          <span className="font-sans font-black text-white text-[12px] tracking-tight">BHR</span>
+        ),
+      },
+      {
+        label: 'Talent Ops',
+        background: 'linear-gradient(135deg,#6366f1,#4338ca)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        ),
+      },
+      {
+        label: 'Onboarding AI',
+        background: 'linear-gradient(135deg,#06b6d4,#0891b2)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <line x1="19" y1="8" x2="19" y2="14" />
+            <line x1="22" y1="11" x2="16" y2="11" />
+          </svg>
         ),
       },
     ],
-    label: 'Data & Telemetry',
+    label: 'People & Culture',
+  },
+  {
+    id: 'admin',
+    title: 'Administrator',
+    tags: ['Azure AD', 'ServiceNow', 'RBAC Access', 'Audit Logs'],
+    icons: [
+      {
+        label: 'Azure AD',
+        background: 'linear-gradient(135deg,#0078d4,#005a9e)',
+        node: (
+          <span className="font-sans font-black text-white text-[11px] tracking-tight">AAD</span>
+        ),
+      },
+      {
+        label: 'ServiceNow',
+        background: 'linear-gradient(135deg,#81b5a1,#293e40)',
+        node: (
+          <span className="font-sans font-black text-white text-[11px] tracking-tight">NOW</span>
+        ),
+      },
+      {
+        label: 'RBAC Access',
+        background: 'linear-gradient(135deg,#0ea5e9,#0284c7)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        ),
+      },
+      {
+        label: 'Audit Logs',
+        background: 'linear-gradient(135deg,#475569,#1e293b)',
+        node: (
+          <svg viewBox="0 0 24 24" width="55%" height="55%" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+            <polyline points="10 9 9 9 8 9" />
+          </svg>
+        ),
+      },
+    ],
+    label: 'Security & Ops',
   },
 ];
 
@@ -148,8 +250,7 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
     }));
 
     const [inputText, setInputText] = useState('');
-    const [selectedModel, setSelectedModel] = useState('Opus 4.5 Medium');
-    const [showModelMenu, setShowModelMenu] = useState(false);
+    const selectedModel = 'Opus 4.5 Medium';
     const [showAttachMenu, setShowAttachMenu] = useState(false);
     const [showTopMenu, setShowTopMenu] = useState(false);
     const [showScrollBottom, setShowScrollBottom] = useState(false);
@@ -160,7 +261,7 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
     const [attachmentNotice, setAttachmentNotice] = useState<string | null>(null);
 
     // Interactive Glass Icon Folder states
-    const [activeFolderId, setActiveFolderId] = useState<'design' | 'automation' | 'analytics'>('design');
+    const [activeFolderId, setActiveFolderId] = useState<string>('departments');
     const [showFolderModal, setShowFolderModal] = useState(false);
 
     const [isDark, setIsDark] = useState<boolean>(() => {
@@ -236,10 +337,6 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
             setShowAttachMenu(false);
             return;
           }
-          if (showModelMenu) {
-            setShowModelMenu(false);
-            return;
-          }
           if (showTopMenu) {
             setShowTopMenu(false);
             return;
@@ -251,7 +348,7 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
       };
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [onClose, showAttachMenu, showModelMenu, showTopMenu]);
+    }, [onClose, showAttachMenu, showTopMenu]);
 
     // =========================================================================
     // 1. Dynamic Typing Eye-Tracking: Steer Dot's eyes to look down at characters as user types
@@ -313,7 +410,6 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
       setInputText('');
       setAttachmentNotice(null);
       setShowAttachMenu(false);
-      setShowModelMenu(false);
       setIsThinking(true);
 
       const prefix = webSearchEnabled ? '[Web Search] ' : '';
@@ -406,7 +502,6 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
         aria-label="AXIA Assistant Chat"
         onClick={() => {
           if (showAttachMenu) setShowAttachMenu(false);
-          if (showModelMenu) setShowModelMenu(false);
           if (showTopMenu) setShowTopMenu(false);
         }}
       >
@@ -602,13 +697,13 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
               </div>
 
               {/* Symmetrical Category Switcher Tabs */}
-              <div className="relative z-10 flex items-center gap-1.5 p-1 rounded-full bg-slate-200/60 dark:bg-zinc-800/90 border border-slate-300/60 dark:border-zinc-700/80 mb-2 shadow-inner">
+              <div className="relative z-10 flex items-center gap-1.5 p-1 rounded-full bg-slate-200/60 dark:bg-zinc-800/90 border border-slate-300/60 dark:border-zinc-700/80 mb-2 shadow-inner overflow-x-auto max-w-full no-scrollbar">
                 {FOLDERS_CONFIG.map((f) => (
                   <button
                     key={f.id}
                     type="button"
-                    onClick={() => setActiveFolderId(f.id as any)}
-                    className={`px-3 py-1 rounded-full text-xs font-medium transition-all ${
+                    onClick={() => setActiveFolderId(f.id)}
+                    className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap transition-all ${
                       activeFolderId === f.id
                         ? "bg-white dark:bg-zinc-700 text-slate-900 dark:text-white shadow-sm font-semibold scale-102"
                         : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
@@ -633,7 +728,11 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
                   onSelectTag={(tag) => {
                     setShowFolderModal(false);
                     setIsThinking(true);
-                    sendMessage(`Tell me about your ${currentFolder.title} capabilities with ${tag} and AI integrations.`);
+                    sendMessage(
+                      currentFolder.id === 'departments'
+                        ? `Tell me about your ${tag} department solutions and AI workflow capabilities.`
+                        : `Tell me about your ${currentFolder.title} capabilities with ${tag} and AI integrations.`
+                    );
                   }}
                   onSelectIcon={(icon) => {
                     if (icon.label) {
@@ -795,43 +894,6 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
                 </div>
               )}
 
-              {/* --- Model Selector Popover Dropdown --- */}
-              {showModelMenu && (
-                <div
-                  className="absolute bottom-14 right-16 w-56 rounded-2xl bg-white dark:bg-zinc-900 border border-slate-200/90 dark:border-zinc-800 shadow-2xl py-2 z-50 text-left text-xs font-medium animate-in fade-in zoom-in-95 duration-150 select-none"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="px-3 py-1.5 text-[10px] font-mono uppercase tracking-wider text-slate-400">
-                    Reasoning Engine
-                  </div>
-                  {AVAILABLE_MODELS.map((model) => (
-                    <button
-                      key={model.id}
-                      type="button"
-                      onClick={() => {
-                        setSelectedModel(model.name);
-                        setShowModelMenu(false);
-                      }}
-                      className={`w-full px-3.5 py-2 flex items-center justify-between transition-colors ${
-                        selectedModel === model.name
-                          ? 'bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 font-semibold'
-                          : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-zinc-800'
-                      }`}
-                    >
-                      <div>
-                        <div>{model.name}</div>
-                        <div className="text-[10px] text-slate-400 font-normal">
-                          {model.provider}
-                        </div>
-                      </div>
-                      {selectedModel === model.name && (
-                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
-                      )}
-                    </button>
-                  ))}
-                </div>
-              )}
-
               {/* --- Rounded Unified Input Container (Matches Screenshot) --- */}
               <div className="flex flex-col bg-slate-50/90 dark:bg-zinc-900/90 border border-slate-200/90 dark:border-zinc-800 rounded-[24px] sm:rounded-[28px] p-2 sm:p-2.5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500/30 focus-within:border-indigo-400 transition-all">
                 {/* Active Web Search Pill Badge */}
@@ -874,7 +936,6 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
                     onClick={(e) => {
                       e.stopPropagation();
                       setShowAttachMenu(!showAttachMenu);
-                      setShowModelMenu(false);
                     }}
                     aria-label="Attach documents, connectors, or web search"
                     className="w-7 h-7 rounded-full bg-slate-200/70 hover:bg-slate-300/80 dark:bg-zinc-800 dark:hover:bg-zinc-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition-transform active:scale-95 cursor-pointer"
@@ -882,22 +943,8 @@ export const ChatPanel = forwardRef<ChatPanelRef, ChatPanelProps>(
                     <Plus className="w-4 h-4" />
                   </button>
 
-                  {/* Right: Model Selector + Mic + Send Button */}
+                  {/* Right: Mic + Send Button */}
                   <div className="flex items-center gap-2">
-                    {/* Model Selector Pill */}
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowModelMenu(!showModelMenu);
-                        setShowAttachMenu(false);
-                      }}
-                      className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-transparent hover:bg-slate-200/60 dark:hover:bg-zinc-800 text-xs font-medium text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
-                    >
-                      <span>{selectedModel}</span>
-                      <ChevronDown className="w-3 h-3 text-slate-400" />
-                    </button>
-
                     {/* Microphone Audio Button */}
                     <button
                       type="button"
